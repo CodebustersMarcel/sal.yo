@@ -2,6 +2,7 @@ package com.salyo.apis;
 
 import com.salyo.data.Department;
 import com.salyo.data.Employee;
+import com.salyo.data.TimeEntry;
 
 import java.util.Collection;
 
@@ -11,4 +12,5 @@ import java.util.Collection;
 public interface TimeTrackingApiWrapper {
     Collection<Employee> getEmployees();
     Collection<Department> getDepartments();
+    Collection<TimeEntry> getTimeEntries();
 }

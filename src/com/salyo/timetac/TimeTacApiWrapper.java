@@ -4,6 +4,7 @@ import com.owlike.genson.Genson;
 import com.salyo.apis.TimeTrackingApiWrapper;
 import com.salyo.data.Department;
 import com.salyo.data.Employee;
+import com.salyo.data.TimeEntry;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,6 +17,7 @@ public class TimeTacApiWrapper implements TimeTrackingApiWrapper {
     private static final String apiUrl = "https://he-cleve-go.timetac.com/wolterskluwer/api/v1/";
     private static final String getUsersPath = "users/get";
     private static final String getDepartmentsPath = "departments/get";
+    private static final String getTimestampsPath = "timestamps/get";
     private final String authorizationHeaderName;
     private final String authorizationHeaderValue;
     private final Genson genson = new Genson();
@@ -50,5 +52,10 @@ public class TimeTacApiWrapper implements TimeTrackingApiWrapper {
     public Collection<Department> getDepartments() {
         TimeTacDepartments timeTacDepartments = get(TimeTacDepartments.class, getDepartmentsPath);
         return timeTacDepartments.toDepartments();
+    }
+
+    public Collection<TimeEntry> getTimeEntries() {
+        TimeTacTimestamps timeTacTimestamps = get(TimeTacTimestamps.class, getTimestampsPath);
+        return timeTacTimestamps.toTimeEntries();
     }
 }

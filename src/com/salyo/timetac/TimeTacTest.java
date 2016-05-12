@@ -5,6 +5,7 @@ import com.salyo.apis.TimeTrackingApiWrapper;
 import com.salyo.apis.TimeTrackingApiWrapperFactory;
 import com.salyo.data.Department;
 import com.salyo.data.Employee;
+import com.salyo.data.TimeEntry;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,6 +40,14 @@ public class TimeTacTest {
 
         for (Department department : employees) {
             System.out.println(department.getName());
+        }
+    }
+
+    @Test
+    public void testTimeEntries() {
+        Collection<TimeEntry> entries = wrapper.getTimeEntries();
+        for (TimeEntry entry : entries) {
+            System.out.println(entry.getForeignSystemId() + " " + entry.getStart() + " " + entry.getEnd());
         }
     }
 }

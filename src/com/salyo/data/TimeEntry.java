@@ -9,8 +9,9 @@ import java.util.UUID;
 public class TimeEntry {
     private UUID id;
     private LocalDateTime start;
-    private LocalDateTime ned;
+    private LocalDateTime end;
     private int type;
+    private String foreignSystemId;
 
     public UUID getId() {
         return id;
@@ -28,12 +29,12 @@ public class TimeEntry {
         this.start = start;
     }
 
-    public LocalDateTime getNed() {
-        return ned;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setNed(LocalDateTime ned) {
-        this.ned = ned;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
     public int getType() {
@@ -42,5 +43,13 @@ public class TimeEntry {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getForeignSystemId() {
+        return foreignSystemId;
+    }
+
+    public void setForeignSystemId(String foreignSystemId) {
+        this.foreignSystemId = foreignSystemId;
     }
 }
