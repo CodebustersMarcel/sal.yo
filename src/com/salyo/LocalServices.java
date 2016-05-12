@@ -21,8 +21,8 @@ public class LocalServices {
 
     private static final String COMPANY_GET_PATH = "companies/get/";
     private static final String ADD_TIMEENTRY_PATH = "timeentries/add/";
-    private static final String ADD_DEPARTMENT_PATH = "departments/add";
-    private static final String ADD_EMPLOYEE_PATH = "employees/add";
+    private static final String ADD_DEPARTMENT_PATH = "departments/add/";
+    private static final String ADD_EMPLOYEE_PATH = "employees/add/";
 
     private static String getJsonString(String path) {
         Client client = ClientBuilder.newClient();
