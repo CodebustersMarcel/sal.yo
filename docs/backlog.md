@@ -1,6 +1,10 @@
 # UI @ Marcel
     - Admin View
     - Dashboard
+        - Customer with Employeees
+        - Sheduler with 5 next
+        - Ratio Error Count
+        - Notifications
     - Configuration
     - Employee Overview
     - Employee Detail View

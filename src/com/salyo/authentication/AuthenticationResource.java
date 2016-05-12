@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 @Path("/auth")
 public class AuthenticationResource {
 
-    @PUT
+    @POST
     @Path("/token")
     @Produces(MediaType.TEXT_PLAIN)
     public Response createToken(@HeaderParam("username") String userName,

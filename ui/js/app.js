@@ -24,15 +24,42 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
 
 
     })
-    .directive('sidenavleft', function() {
+    .service('authService', function ($http,$location, $mdToast) {
+        return {
+            createToken: function (username, password) {
+
+
+
+
+                $http({ method: 'POST', url: 'http://localhost:9998/auth/token',
+                    headers: { 'Content-Type': 'text/plain','username':username,'password':password } })
+                    .success(function(result){
+                        $location.path('/dashboard');
+                }).error(function(status){
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('username or password invalid!')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                    );
+
+                });
+
+
+            }
+        }
+
+
+    })
+    .directive('sidenavleft', function () {
         return {
             templateUrl: 'html/widget/sidenavleft.html'
         };
     })
-    .directive('directive', function($compile, $interpolate) {
+    .directive('directive', function ($compile, $interpolate) {
         return {
             template: '',
-            link: function($scope, element, attributes) {
+            link: function ($scope, element, attributes) {
                 element.html(attributes.directive);
                 var el = $compile(element.contents())($scope);
 
@@ -40,12 +67,12 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
             }
         };
     })
-    .controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log,$location) {
+    .controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log, $location) {
 
 
         $scope.toggleLeft = buildToggler('leftnav');
 
-        $scope.isOpenLeft = function(){
+        $scope.isOpenLeft = function () {
             return $mdSidenav('leftnav').isOpen();
         };
 
@@ -56,18 +83,19 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
                 var context = $scope,
                     args = Array.prototype.slice.call(arguments);
                 $timeout.cancel(timer);
-                timer = $timeout(function() {
+                timer = $timeout(function () {
                     timer = undefined;
                     func.apply(context, args);
                 }, wait || 10);
             };
         }
+
         /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
          */
         function buildDelayedToggler(navID) {
-            return debounce(function() {
+            return debounce(function () {
                 $mdSidenav(navID)
                     .toggle()
                     .then(function () {
@@ -75,8 +103,9 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
                     });
             }, 200);
         }
+
         function buildToggler(navID) {
-            return function() {
+            return function () {
                 $mdSidenav(navID)
                     .toggle()
                     .then(function () {
@@ -91,36 +120,36 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
 
         }
     })
-    .controller('LoginCtrl', function ($scope,$location){
-        $scope.username="";
-        $scope.password="";
+    .controller('LoginCtrl', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
+        $scope.username = "";
+        $scope.password = "";
 
 
+        $scope.login = function (username, password) {
+            authService.createToken(username, password);
 
-        $scope.login=function(username,password){
-            $location.path("/dashboard")
+        }
+    }])
+    .controller('DashboardCtrl', function ($scope, $location) {
+
+    })
+    .controller('sidenavleftCtrl', function ($scope, $mdSidenav, $location) {
+
+        $scope.links = [
+            {id: 'dashboard', name: 'Dashboard', url: '/dashboard', badge: 0},
+            {id: 'company', name: 'Companies', url: '/companies', badge: 0}
+        ];
+
+
+        $scope.close = function (url) {
+
+
+            $mdSidenav('leftnav').close()
+                .then(function () {
+
+                });
+            $location.path(url);
+
         }
     })
-    .controller('DashboardCtrl', function ($scope,$location){
-
-    })
-    .controller('sidenavleftCtrl',function($scope,$mdSidenav,$location){
-
-    $scope.links=[
-        {id:'dashboard',name:'Dashboard',url:'/dashboard',badge:0},
-        {id:'company',name:'Companies',url:'/companies',badge:0}
-    ];
-
-
-
-    $scope.close = function (url) {
-
-
-        $mdSidenav('leftnav').close()
-            .then(function () {
-
-            });
-        $location.path(url);
-
-    }
-});
+;

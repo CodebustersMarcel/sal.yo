@@ -11,3 +11,7 @@
     background-repeat: no-repeat;
     height: 400px;
 }
+
+.error {
+    background-color: red;
+}
