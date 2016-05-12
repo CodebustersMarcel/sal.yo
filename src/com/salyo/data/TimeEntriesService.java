@@ -41,7 +41,7 @@ public class TimeEntriesService {
         return entries
                 .stream()
                 .filter(timeEntry -> timeEntry.getEmployeeId().equals(employeeId))
-                .filter(timeEntry -> timeEntry.getStart().toLocalDate().equals(date) || timeEntry.getEnd().toLocalDate().equals(date))
+                .filter(timeEntry -> timeEntry.getStartDateTime().toLocalDate().equals(date) || timeEntry.getEndDateTime().toLocalDate().equals(date))
                 .collect(Collectors.toList());
     }
 }

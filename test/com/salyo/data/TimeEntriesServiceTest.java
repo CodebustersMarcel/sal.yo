@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -34,8 +35,8 @@ public class TimeEntriesServiceTest {
     private static TimeEntry createTimeEntry(UUID employeeId, LocalDateTime start, LocalDateTime end) {
         TimeEntry timeEntry = new TimeEntry();
         timeEntry.setEmployeeId(employeeId);
-        timeEntry.setStart(start);
-        timeEntry.setEnd(end);
+        timeEntry.setStart(start.format(DateTimeFormatter.ISO_DATE_TIME));
+        timeEntry.setEnd(end.format(DateTimeFormatter.ISO_DATE_TIME));
         return timeEntry;
     }
 

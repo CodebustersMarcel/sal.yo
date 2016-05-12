@@ -54,7 +54,7 @@ public class LocalServices {
         return get(Company.class, COMPANY_GET_PATH, companyId);
     }
 
-    public static void addTimeEntry(TimeEntry timeEntry) {
-        post(timeEntry, ADD_TIMEENTRY_PATH);
+    public static Response addTimeEntry(TimeEntry timeEntry) {
+        return post(timeEntry, ADD_TIMEENTRY_PATH);
     }
 }

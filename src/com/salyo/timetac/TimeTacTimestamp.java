@@ -52,8 +52,12 @@ public class TimeTacTimestamp {
         TimeEntry result = new TimeEntry();
 
         result.setForeignSystemId(Integer.toString(id));
-        result.setStart(LocalDateTime.parse(start_time, formatter));
-        result.setEnd(LocalDateTime.parse(end_time, formatter));
+
+        LocalDateTime start = LocalDateTime.parse(start_time, formatter);
+        LocalDateTime end = LocalDateTime.parse(end_time, formatter);
+
+        result.setStart(start.format(DateTimeFormatter.ISO_DATE_TIME));
+        result.setEnd(end.format(DateTimeFormatter.ISO_DATE_TIME));
 
         return result;
     }

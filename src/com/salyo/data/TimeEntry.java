@@ -1,6 +1,7 @@
 package com.salyo.data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -9,8 +10,8 @@ import java.util.UUID;
 public class TimeEntry {
     private UUID id;
     private UUID employeeId;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private String start;
+    private String end;
     private int type;
     private String foreignSystemId;
 
@@ -30,36 +31,28 @@ public class TimeEntry {
         this.employeeId = employeeId;
     }
 
-    public LocalDateTime getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public String getStartText() {
-        return start.toString();
-    }
-
-    public void setStartText(String value) {
-        start = LocalDateTime.parse(value);
-    }
-
-    public LocalDateTime getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 
-    public String getEndText() {
-        return end.toString();
+    public LocalDateTime getStartDateTime() {
+        return LocalDateTime.parse(getStart(), DateTimeFormatter.ISO_DATE_TIME);
     }
 
-    public void setEndText(String value) {
-        end = LocalDateTime.parse(value);
+    public LocalDateTime getEndDateTime() {
+        return LocalDateTime.parse(getEnd(), DateTimeFormatter.ISO_DATE_TIME);
     }
 
     public int getType() {

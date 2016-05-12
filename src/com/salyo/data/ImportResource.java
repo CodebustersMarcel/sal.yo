@@ -4,10 +4,7 @@ import com.salyo.LocalServices;
 import com.salyo.apis.TimeTrackingApiWrapper;
 import com.salyo.apis.TimeTrackingApiWrapperFactory;
 
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -18,7 +15,7 @@ import java.util.UUID;
  */
 @Path("/import")
 public class ImportResource {
-    @PUT
+    @POST
     @Path("/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response importCompany(@PathParam("companyId") UUID companyId) {
@@ -35,7 +32,11 @@ public class ImportResource {
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
 
         for (TimeEntry timeEntry : timeEntries) {
-            LocalServices.addTimeEntry(timeEntry);
+            Response response = LocalServices.addTimeEntry(timeEntry);
+
+            if (response.getStatus() != 200) {
+                return response;
+            }
         }
 
         return Response.ok().build();
