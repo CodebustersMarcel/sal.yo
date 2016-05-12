@@ -1,7 +1,7 @@
 package com.salyo;
 
 import com.owlike.genson.ext.jaxrs.GensonJsonConverter;
-import com.salyo.data.CompanyResource;
+import com.salyo.data.*;
 import com.salyo.authentication.AuthenticationResource;
 import com.salyo.data.DepartmentResource;
 import com.salyo.data.EmployeeResource;
@@ -46,6 +46,7 @@ public class Main {
         classes.add(TimeEntriesResources.class);
         classes.add(AuthenticationResource.class);
         classes.add(CompanyResource.class);
+        classes.add(ImportResource.class);
         classes.add(NotificationResource.class);
         return classes;
     }
