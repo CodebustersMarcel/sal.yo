@@ -1,0 +1,13 @@
+
+.login-logo {
+    position: relative;
+    top: -150px;
+    min-width: 200px;
+}
+
+
+.back {
+    background-image: url("../img/back.png");
+    background-repeat: no-repeat;
+    height: 400px;
+}

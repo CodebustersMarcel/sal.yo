@@ -1,0 +1,42 @@
+<div layout="column" layout-align="center" class="back" md-whiteframe="1">
+
+
+    <span><img src="img/logo.svg"/></span>
+    <span flex></span>
+
+</div>
+<div class="login-logo" flex-xs="70" flex-gt-xs="70" layout="row" class="layout-column flex-xs flex-gt-xs-70"
+     layout-align="center center">
+    <md-card flex-xs="50" flex-gt-xs="50" layout="row" class="layout-column flex-xs flex-gt-xs-50">
+
+        <md-card-title flex-xs="25" flex-gt-xs="25" layout="row" class="layout-column flex-xs flex-gt-xs-25">
+            <md-card-title-text>
+                <span class="md-headline">Login to sal.yo</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content flex>
+            <md-form>
+                <md-input-container>
+                    <label>Username or mail</label>
+                    <input type="text" ng-model="username" required md-maxlength="100">
+                </md-input-container>
+                <br/>
+                <md-input-container>
+                    <label>Password</label>
+                    <input type="password" ng-model="password" required md-maxlength="30">
+                </md-input-container>
+            </md-form>
+            <md-card-actions layout="row" layout-align="end center" class="layout-align-end-center">
+                <button class="md-primary md-button md-raised" type="button" ng-click="login(username,password)"
+                        aria-label="Login"><span
+                        class="ng-scope">Login</span></button>
+
+            </md-card-actions>
+
+
+        </md-card-content>
+
+
+    </md-card>
+</div>

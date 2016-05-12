@@ -1,0 +1,25 @@
+ 
+	 
+	 <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="leftnav">
+            <md-toolbar class="md-toolbar-tools">
+                 <img src="../../img/logo.svg" height="50px" style="margin-right:4px"/>
+        <h2>
+		
+          <span>Online salary<br/>manager</span>
+        </h2>
+            </md-toolbar>
+            <md-content layout="column" flex ng-controller="sidenavleftCtrl">
+			
+              <md-list-item class="md-1-line md-no-proxy ng-scope" ng-repeat="l in links">
+					<img height="24px" width="24px"  src="img/{{l.id}}.png">
+					<div class="md-list-item-text layout-column" layout="column">
+					 <button class="md-button md-ink-ripple" ng-click="close(l.url)" type="button"  aria-label="{{l.name}}"><span class="ng-scope">{{l.name}}</span></button>
+				 
+					</div>
+					
+      </md-list-item>
+	  </md-list>
+            </md-content>
+
+        </md-sidenav>
+	   
