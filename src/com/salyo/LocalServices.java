@@ -2,6 +2,8 @@ package com.salyo;
 
 import com.owlike.genson.Genson;
 import com.salyo.data.Company;
+import com.salyo.data.Department;
+import com.salyo.data.Employee;
 import com.salyo.data.TimeEntry;
 
 import javax.ws.rs.client.Client;
@@ -19,6 +21,8 @@ public class LocalServices {
 
     private static final String COMPANY_GET_PATH = "companies/get/";
     private static final String ADD_TIMEENTRY_PATH = "timeentries/add/";
+    private static final String ADD_DEPARTMENT_PATH = "departments/add";
+    private static final String ADD_EMPLOYEE_PATH = "employees/add";
 
     private static String getJsonString(String path) {
         Client client = ClientBuilder.newClient();
@@ -56,5 +60,13 @@ public class LocalServices {
 
     public static Response addTimeEntry(TimeEntry timeEntry) {
         return post(timeEntry, ADD_TIMEENTRY_PATH);
+    }
+
+    public static Response addDepartment(Department department) {
+        return post(department, ADD_DEPARTMENT_PATH);
+    }
+
+    public static Response addEmployee(Employee employee) {
+        return post(employee, ADD_EMPLOYEE_PATH);
     }
 }
