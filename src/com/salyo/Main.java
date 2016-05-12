@@ -1,6 +1,7 @@
 package com.salyo;
 
 import com.owlike.genson.ext.jaxrs.GensonJsonConverter;
+import com.salyo.data.CompanyResource;
 import com.salyo.data.DepartmentResource;
 import com.salyo.data.EmployeeResource;
 import com.salyo.data.TimeEntriesResources;
@@ -34,7 +35,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static Set<Class<?>> retrieveResourceConfigurations() {
@@ -42,6 +42,7 @@ public class Main {
         classes.add(EmployeeResource.class);
         classes.add(DepartmentResource.class);
         classes.add(TimeEntriesResources.class);
+        classes.add(CompanyResource.class);
         return classes;
     }
 }
