@@ -22,9 +22,7 @@ public class ImportResource {
     @Path("/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response importCompany(@PathParam("companyId") UUID companyId) {
-        String path = String.format("companies/get/%s", companyId);
-
-        Company company = LocalServices.get(Company.class, path);
+        Company company = LocalServices.getCompany(companyId);
 
         if (company == null) {
             return Response.serverError().build();
@@ -35,6 +33,10 @@ public class ImportResource {
         Collection<Employee> employees = wrapper.getEmployees();
         Collection<Department> departments = wrapper.getDepartments();
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
+
+        for (TimeEntry timeEntry : timeEntries) {
+            LocalServices.addTimeEntry(timeEntry);
+        }
 
         return Response.ok().build();
     }
