@@ -107,7 +107,8 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute'])
     .controller('sidenavleftCtrl',function($scope,$mdSidenav,$location){
 
     $scope.links=[
-        {id:'dashboard',name:'Dashboard',url:'/dashboard',badge:0}
+        {id:'dashboard',name:'Dashboard',url:'/dashboard',badge:0},
+        {id:'company',name:'Companies',url:'/companies',badge:0}
     ];
 
 
