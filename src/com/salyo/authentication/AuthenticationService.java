@@ -24,4 +24,8 @@ public class AuthenticationService {
         User user = this.credentials.get(userName);
         return user != null && user.getPasswordHash().equals(password);
     }
+
+    public User getUserByUsername(String username) {
+        return this.credentials.get(username);
+    }
 }
