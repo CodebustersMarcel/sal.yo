@@ -1,7 +1,4 @@
 package com.salyo.notification;
-
-import com.sun.org.apache.xerces.internal.util.URI;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -9,8 +6,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Created by eugen.rieb on 12.05.2016.
  */
@@ -36,12 +31,26 @@ public class NotificationResource {
         }
     }
 
-    @PUT
-    @Path("/result")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response putMessage() {
-        return Response.ok().build();
+    @POST
+    @Path("/add")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response putMessage(@HeaderParam("short") String shortMessage,
+                               @HeaderParam("full") String fullMessage) {
+        NotificationMessage notificationMessage = new NotificationMessage(nextId(),shortMessage,fullMessage);
+        if(MailNotificator.SendEmail(notificationMessage)){
+            notifications.add(notificationMessage);
+            return Response.ok(notificationMessage.getId()).build();
+        }
+
+        return Response.serverError().entity("Sending failed!").build();
     }
+
+    private long nextId() {
+       long lastId = notifications.stream()
+                .max(Comparator.comparing(notificationMessage -> notificationMessage.getId())).get().getId();
+        return ++lastId;
+    }
+
     @GET
     @Path("/by/{date}")
     @Produces(MediaType.APPLICATION_JSON)

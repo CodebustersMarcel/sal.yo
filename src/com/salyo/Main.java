@@ -6,6 +6,7 @@ import com.salyo.authentication.AuthenticationResource;
 import com.salyo.data.DepartmentResource;
 import com.salyo.data.EmployeeResource;
 import com.salyo.data.TimeEntriesResources;
+import com.salyo.notification.NotificationResource;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -45,6 +46,7 @@ public class Main {
         classes.add(TimeEntriesResources.class);
         classes.add(AuthenticationResource.class);
         classes.add(CompanyResource.class);
+        classes.add(NotificationResource.class);
         return classes;
     }
 }
