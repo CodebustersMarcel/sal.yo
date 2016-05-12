@@ -1,9 +1,6 @@
 package com.salyo.data;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
@@ -20,7 +17,7 @@ import java.util.stream.Stream;
 public class TimeEntriesResources {
 
     @GET
-    @Path("/all")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
 
@@ -34,11 +31,12 @@ public class TimeEntriesResources {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTimeEntriesByEmployee(@PathParam("employeeId") UUID employeeId) {
 
-        List<TimeEntry> items = Stream.generate(TimeEntry::new).limit(500).collect(Collectors.toList());
+        List<TimeEntry> items = TimeEntriesService.getInstance().getAllByEmployee(employeeId);
 
         return Response.ok(items).build();
     }
 
+    @GET
     @Path("/{employeeId}/{date}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTimeEntriesByEmployeeAndDate(@PathParam("employeeId") UUID employeeId, @PathParam("date") String date) {
@@ -50,9 +48,17 @@ public class TimeEntriesResources {
             return Response.serverError().entity(e.getLocalizedMessage()).build();
         }
 
-        List<TimeEntry> items = Stream.generate(TimeEntry::new).limit(500).collect(Collectors.toList());
+        List<TimeEntry> items = TimeEntriesService.getInstance().getAllByEmployeeAndDate(employeeId, localDate);
 
         return Response.ok(items).build();
     }
 
+    @POST
+    @Path("/add")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response persistTimeEntry(TimeEntry timeEntry) {
+        UUID id = TimeEntriesService.getInstance().persist(timeEntry);
+        return Response.ok().entity(id).build();
+    }
 }
