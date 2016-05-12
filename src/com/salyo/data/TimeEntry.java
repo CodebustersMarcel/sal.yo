@@ -8,6 +8,7 @@ import java.util.UUID;
  */
 public class TimeEntry {
     private UUID id;
+    private UUID employeeId;
     private LocalDateTime start;
     private LocalDateTime end;
     private int type;
@@ -19,6 +20,14 @@ public class TimeEntry {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(UUID employeeId) {
+        this.employeeId = employeeId;
     }
 
     public LocalDateTime getStart() {
