@@ -14,8 +14,7 @@ public class AuthenticationResource {
     @Path("/token")
     @Produces(MediaType.TEXT_PLAIN)
     public Response createToken(@HeaderParam("username") String userName,
-                                @HeaderParam("password") String password,
-                                @HeaderParam("authentication-token") String authenticationToken) {
+                                @HeaderParam("password") String password) {
         if(!AuthenticationService.getInstance().check(userName, password)) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }

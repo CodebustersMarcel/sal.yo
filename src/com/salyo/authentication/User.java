@@ -12,6 +12,16 @@ public class User {
     private UserRole role;
     private String token;
 
+    public User(String username, String passwordHash, UserRole role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+
+    public static User create(String username, String passwordHash, UserRole role) {
+        return new User(username, passwordHash, role);
+    }
+
     public UUID getId() {
         return id;
     }
@@ -43,7 +53,5 @@ public class User {
     public void setRole(UserRole role) {
         this.role = role;
     }
-
-
 }
 
