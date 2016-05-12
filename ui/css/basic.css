@@ -9,9 +9,66 @@
 .back {
     background-image: url("../img/back.png");
     background-repeat: no-repeat;
-    height: 400px;
+    height: 600px;
 }
 
+.fab1{
+    position:relative;
+   left: 100px;
+}
+
+.config-green{
+    background-image: url("../img/green.svg");
+    background-repeat: no-repeat;
+    width: 260px;
+    height: 260px;
+    padding:110px;
+
+}
+.dash001{
+    background-color: #2196F3;
+    color:#fff;
+    width: 350px;
+    height: 130px;
+    font-weight: bold;
+    margin:10px;
+}
+
+.dash002{
+    background-color: #9C27B0;
+    color:#fff;
+    width: 350px;
+    height: 130px;
+    font-weight: bold;
+    margin:10px;
+
+}
+
+.dash003{
+    background-color: #009688;
+    color:#fff;
+    width: 350px;
+    height: 130px;
+    font-weight: bold;
+    margin:10px;
+
+}
+
+.config-blue{
+    background-image: url("../img/blue.svg");
+    background-repeat: no-repeat;
+    width: 260px;
+    height: 260px;
+padding:110px;
+}
+.config-red{
+    background-image: url("../img/red.svg");
+    background-repeat: no-repeat;
+
+    width: 260px;
+    height: 260px;
+    padding:100px;
+}
 .error {
     background-color: red;
 }

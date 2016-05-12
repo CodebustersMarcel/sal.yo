@@ -1,30 +1,4 @@
-<sidenavleft></sidenavleft>
-<md-toolbar md-whiteframe="2">
-    <div class="md-toolbar-tools">
-        <button class="md-icon-button md-button md-ink-ripple" type="button" aria-label="Settings"
-                ng-click="toggleLeft()">
-            <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
-            <div class="md-ripple-container"></div>
-        </button>
-        <img src="img/logo.svg" width="150"/>
-        <div hide="" show-gt-sm="" flex="" class="hide show-gt-sm flex">
-
-            <span>Online salary manager</span>
-            <span flex="" class="flex"></span>
-
-            <button class="md-accent md-button md-raised" type="button"
-                    aria-label="Create import"><span
-                    class="ng-scope">Create import</span></button>
-
-        </div>
-        <span flex="" class="flex"></span>
-
-        <button class="md-icon-button md-button md-ink-ripple" type="button" aria-label="More" ng-click="close('/login')">
-            <md-icon aria-label="Menu" class="material-icons">more_vert</md-icon>
-            <div class="md-ripple-container"></div>
-        </button>
-    </div>
-</md-toolbar>
+<header></header>
 
 <md-chips>
 
@@ -32,22 +6,47 @@
     <md-chip>Dashboard</md-chip>
 </md-chips>
 
-<md-content class="md-padding layout-xs-column layout-row" layout-xs="column" layout="column">
+<div class="md-padding layout-xs-column layout-row" layout-xs="column" layout="column"
+          layout-align="center center" >
 
 
-    <md-card flex-xs="50" flex-gt-xs="50" layout="row" class="layout-column flex-xs flex-gt-xs-50">
-        <md-card-title-text>
-            <span class="md-headline">Customers</span><br/>
-            <span class="md-subhead">view all customers in sal.yo</span>
+ <div class="dash001" md-whiteframe="3">
 
-        </md-card-title-text>
-    </md-card>
-    <md-card flex-xs="50" flex-gt-xs="50" layout="row" class="layout-column flex-xs flex-gt-xs-50">
-        <md-card-title-text>
-            <span class="md-headline">Sheduler</span><br/>
-            <span class="md-subhead">view all imports in sal.yo</span>
+     <div layout="column">
+         <div layout="row" layout-align="center center">
+             <h4>Customers</h4>
+         </div>
+         <div layout="row" layout-align="center center">
+             <h1>{{customers}}</h1>
+         </div>
+     </div>
+ </div>
+    <div class="dash002" md-whiteframe="3">
 
-        </md-card-title-text>
-    </md-card>
+        <div layout="column">
+            <div layout="row" layout-align="center center">
+                <h4>Notifications</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h1>{{notifications}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="dash003" md-whiteframe="3">
 
-</md-content>
+        <div layout="column">
+            <div layout="row" layout-align="center center">
+                <h4>API Count</h4>
+            </div>
+            <div layout="row" layout-align="center center">
+                <h1>{{api}}</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="md-padding layout-xs-column layout-row" layout-xs="column" layout="column"
+     layout-align="center center" >
+
+
+</div>
