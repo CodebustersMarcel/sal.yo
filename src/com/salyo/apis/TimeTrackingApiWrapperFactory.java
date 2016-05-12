@@ -1,6 +1,6 @@
 package com.salyo.apis;
 
-import com.salyo.timetac.TimeTacApiWrapperWrapper;
+import com.salyo.timetac.TimeTacApiWrapper;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -10,7 +10,7 @@ public class TimeTrackingApiWrapperFactory {
     public static TimeTrackingApiWrapper create(TimeTrackingApi api, String username, String password) {
         switch (api) {
             case TimeTac:
-                return new TimeTacApiWrapperWrapper(username, password);
+                return new TimeTacApiWrapper(username, password);
 
             default:
                 throw new NotImplementedException();
