@@ -12,12 +12,6 @@ import java.util.stream.Collectors;
 @Path("/notifications")
 public class NotificationResource {
     static List<NotificationMessage> notifications = new LinkedList<>();
-    static{
-        notifications.add(new NotificationMessage(1,"short Message1","full Message1"));
-        notifications.add(new NotificationMessage(2,"short Message2","full Message2"));
-        notifications.add(new NotificationMessage(3,"short Message3","full Message3"));
-        notifications.add(new NotificationMessage(4,"short Message4","full Message4"));
-    }
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -25,7 +19,7 @@ public class NotificationResource {
 
         Optional<NotificationMessage> optNotification = notifications.stream().filter(n->n.getId() == id).findFirst();
         if(optNotification.isPresent()){
-            return Response.ok(optNotification.get()).build();
+            return Response.ok(optNotification.get().getFullMessage()).build();
         }else{
             return Response.serverError().entity("Notification Message not found.").build();
         }
@@ -46,7 +40,10 @@ public class NotificationResource {
     }
 
     private long nextId() {
-       long lastId = notifications.stream()
+        if (notifications.isEmpty()) {
+            return 1;
+        }
+        long lastId = notifications.stream()
                 .max(Comparator.comparing(notificationMessage -> notificationMessage.getId())).get().getId();
         return ++lastId;
     }
