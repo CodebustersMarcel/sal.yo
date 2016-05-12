@@ -3,6 +3,7 @@ package com.salyo;
 import com.owlike.genson.ext.jaxrs.GensonJsonConverter;
 import com.salyo.data.DepartmentResource;
 import com.salyo.data.EmployeeResource;
+import com.salyo.data.TimeEntriesResources;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -40,6 +41,7 @@ public class Main {
         Set<Class<?>> classes = new HashSet<>();
         classes.add(EmployeeResource.class);
         classes.add(DepartmentResource.class);
+        classes.add(TimeEntriesResources.class);
         return classes;
     }
 }
