@@ -12,15 +12,16 @@ import java.util.stream.Collectors;
 @Path("/notifications")
 public class NotificationResource {
     static List<NotificationMessage> notifications = new LinkedList<>();
+
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMessageById(@PathParam("id") long id) {
 
-        Optional<NotificationMessage> optNotification = notifications.stream().filter(n->n.getId() == id).findFirst();
-        if(optNotification.isPresent()){
+        Optional<NotificationMessage> optNotification = notifications.stream().filter(n -> n.getId() == id).findFirst();
+        if (optNotification.isPresent()) {
             return Response.ok(optNotification.get().getFullMessage()).build();
-        }else{
+        } else {
             return Response.serverError().entity("Notification Message not found.").build();
         }
     }
@@ -30,8 +31,8 @@ public class NotificationResource {
     @Consumes(MediaType.TEXT_PLAIN)
     public Response putMessage(@HeaderParam("short") String shortMessage,
                                @HeaderParam("full") String fullMessage) {
-        NotificationMessage notificationMessage = new NotificationMessage(nextId(),shortMessage,fullMessage);
-        if(MailNotificator.SendEmail(notificationMessage)){
+        NotificationMessage notificationMessage = new NotificationMessage(nextId(), shortMessage, fullMessage);
+        if (MailNotificator.SendEmail(notificationMessage)) {
             notifications.add(notificationMessage);
             return Response.ok(notificationMessage.getId()).build();
         }
@@ -59,10 +60,14 @@ public class NotificationResource {
             return Response.serverError().entity(e.getLocalizedMessage()).build();
         }
 
-        List<NotificationMessage> foundedNotifications = notifications.stream().filter(n->n.getDate().toLocalDate().equals(localDate)).collect(Collectors.toList());
-        if(!notifications.isEmpty()){
-            return Response.ok(foundedNotifications).build();
-        }else{
+        List<NotificationMessage> foundedNotifications = notifications.stream().filter(n -> n.getDate().toLocalDate().equals(localDate)).collect(Collectors.toList());
+        if (!notifications.isEmpty()) {
+            String responseMessage = "";
+            for (NotificationMessage notification : notifications) {
+                responseMessage += notification.getFullMessage() + "\n";
+            }
+            return Response.ok(responseMessage).build();
+        } else {
             return Response.serverError().entity("Notification Message not found.").build();
         }
     }
