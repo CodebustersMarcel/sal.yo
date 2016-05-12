@@ -1,6 +1,7 @@
-package com.salyo;
+package com.salyo.timetac;
 
 import com.owlike.genson.annotation.JsonProperty;
+import com.salyo.data.Employee;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -32,12 +33,12 @@ public class TimeTacUsers {
         this.numResults = numResults;
     }
 
-    public Collection<User> toUsers() {
-        List<User> result = new LinkedList<>();
+    public Collection<Employee> toEmployees() {
+        List<Employee> result = new LinkedList<>();
 
         if (results != null) {
             for (TimeTacUser timeTacUser : results) {
-                result.add(timeTacUser.toUser());
+                result.add(timeTacUser.toEmployee());
             }
         }
 

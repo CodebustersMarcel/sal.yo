@@ -1,4 +1,6 @@
-package com.salyo;
+package com.salyo.timetac;
+
+import com.salyo.data.Employee;
 
 /**
  * Created by daniel.blum on 12.05.2016.
@@ -41,12 +43,13 @@ public class TimeTacUser {
         this.lastname = lastname;
     }
 
-    public User toUser() {
-        User result = new User();
+    public Employee toEmployee() {
+        Employee result = new Employee();
 
-        result.setId(id);
-        result.setFirstname(firstname);
-        result.setLastname(lastname);
+        result.setForeignSystemId(Integer.toString(id));
+
+        result.setFirstName(firstname);
+        result.setLastName(lastname);
 
         return result;
     }
