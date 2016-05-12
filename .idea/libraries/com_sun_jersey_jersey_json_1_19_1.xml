@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="com.sun.jersey:jersey-json:1.19.1" type="repository">
+    <properties maven-id="com.sun.jersey:jersey-json:1.19.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/sun/jersey/jersey-json/1.19.1/jersey-json-1.19.1.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/codehaus/jettison/jettison/1.1/jettison-1.1.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/sun/xml/bind/jaxb-impl/2.2.3-1/jaxb-impl-2.2.3-1.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.9.2/jackson-core-asl-1.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.2/jackson-mapper-asl-1.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/codehaus/jackson/jackson-jaxrs/1.9.2/jackson-jaxrs-1.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/sun/jersey/jersey-core/1.19.1/jersey-core-1.19.1.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
