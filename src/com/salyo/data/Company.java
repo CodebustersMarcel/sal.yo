@@ -13,6 +13,7 @@ public class Company {
     private TimeTrackingApi api;
     private String username;
     private String password;
+    private UUID userId;
 
     public UUID getId() {
         return id;
@@ -52,5 +53,13 @@ public class Company {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }
