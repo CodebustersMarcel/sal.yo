@@ -31,7 +31,7 @@ public class ImportResource {
         Collection<Department> departments = wrapper.getDepartments();
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
 
-        /* for (Department department : departments) {
+        for (Department department : departments) {
             Response response = LocalServices.addDepartment(department);
 
             if (response.getStatus() != 200) {
@@ -45,7 +45,7 @@ public class ImportResource {
             if (response.getStatus() != 200) {
                 return response;
             }
-        } */
+        }
 
         for (TimeEntry timeEntry : timeEntries) {
             Response response = LocalServices.addTimeEntry(timeEntry);
