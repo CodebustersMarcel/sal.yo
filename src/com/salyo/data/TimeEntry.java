@@ -38,12 +38,28 @@ public class TimeEntry {
         this.start = start;
     }
 
+    public String getStartText() {
+        return start.toString();
+    }
+
+    public void setStartText(String value) {
+        start = LocalDateTime.parse(value);
+    }
+
     public LocalDateTime getEnd() {
         return end;
     }
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public String getEndText() {
+        return end.toString();
+    }
+
+    public void setEndText(String value) {
+        end = LocalDateTime.parse(value);
     }
 
     public int getType() {
