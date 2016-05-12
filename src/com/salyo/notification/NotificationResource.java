@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
  */
 @Path("/notifications")
 public class NotificationResource {
-    static List<NotificationMessage> notifications = new LinkedList<>();
+    private static List<NotificationMessage> notifications = new LinkedList<>();
+    private static final String messageNotFound = "Notification Message not found.";
 
     @GET
     @Path("/{id}")
@@ -22,7 +23,7 @@ public class NotificationResource {
         if (optNotification.isPresent()) {
             return Response.ok(optNotification.get().getFullMessage()).build();
         } else {
-            return Response.serverError().entity("Notification Message not found.").build();
+            return Response.serverError().entity(messageNotFound).build();
         }
     }
 
@@ -61,14 +62,14 @@ public class NotificationResource {
         }
 
         List<NotificationMessage> foundedNotifications = notifications.stream().filter(n -> n.getDate().toLocalDate().equals(localDate)).collect(Collectors.toList());
-        if (!notifications.isEmpty()) {
+        if (!foundedNotifications.isEmpty()) {
             String responseMessage = "";
-            for (NotificationMessage notification : notifications) {
+            for (NotificationMessage notification : foundedNotifications) {
                 responseMessage += notification.getFullMessage() + "\n";
             }
             return Response.ok(responseMessage).build();
         } else {
-            return Response.serverError().entity("Notification Message not found.").build();
+            return Response.serverError().entity(messageNotFound).build();
         }
     }
 }
