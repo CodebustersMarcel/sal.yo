@@ -56,6 +56,9 @@ public class TimeTacDepartment {
         Department result = new Department();
 
         result.setName(department_name);
+        result.setForeignSystemId(Integer.toString(id));
+        result.setForeignSystemSupervisorId(Integer.toString(supervisor_id));
+        result.setForeignSystemSupervisorAssistantId(Integer.toString(supervisor_assistant_id));
 
         return result;
     }

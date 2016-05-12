@@ -13,6 +13,9 @@ public class Department {
     private UUID supervisorId;
     private UUID supervisorAssistantId;
     private UUID parenId;
+    private String foreignSystemId;
+    private String foreignSystemSupervisorId;
+    private String foreignSystemSupervisorAssistantId;
 
     public UUID getId() {
         return id;
@@ -52,5 +55,29 @@ public class Department {
 
     public void setParenId(UUID parenId) {
         this.parenId = parenId;
+    }
+
+    public String getForeignSystemId() {
+        return foreignSystemId;
+    }
+
+    public void setForeignSystemId(String foreignSystemId) {
+        this.foreignSystemId = foreignSystemId;
+    }
+
+    public String getForeignSystemSupervisorId() {
+        return foreignSystemSupervisorId;
+    }
+
+    public void setForeignSystemSupervisorId(String foreignSystemSupervisorId) {
+        this.foreignSystemSupervisorId = foreignSystemSupervisorId;
+    }
+
+    public String getForeignSystemSupervisorAssistantId() {
+        return foreignSystemSupervisorAssistantId;
+    }
+
+    public void setForeignSystemSupervisorAssistantId(String foreignSystemSupervisorAssistantId) {
+        this.foreignSystemSupervisorAssistantId = foreignSystemSupervisorAssistantId;
     }
 }
