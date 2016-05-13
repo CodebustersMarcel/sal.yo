@@ -1,4 +1,4 @@
-angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies'])
+angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies','angular-timeline','angular-scroll-animate'])
     .config(function ($mdThemingProvider) {
 
         $mdThemingProvider.theme('default')
@@ -23,6 +23,9 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies'])
         }).when("/configuration", {
             templateUrl: "html/configuration.html",
             controller: "ConfigurationCtrl"
+        }).when("/employee", {
+            templateUrl: "html/employee.html",
+            controller: "EmployeeCtrl"
         }).otherwise({
             templateUrl: "html/login.html",
             controller: "LoginCtrl"
@@ -89,7 +92,7 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies'])
         };
     })
     .controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log, $location) {
-$scope.search="";
+        $scope.search="";
 
         $scope.toggleLeft = buildToggler('leftnav');
 
@@ -136,6 +139,60 @@ $scope.search="";
 
         }
     })
+    .controller('EmployeeCtrl', function ($scope) {
+        $scope.side='';
+        $scope.events = [{
+            badgeClass: 'info',
+            badgeIconClass: '',
+            title: 'Import data from TimeTac',
+            content: '5/1/2016 till 5/3/2016'
+        },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/1/2016',
+                content: '8 hours worked in office'
+            },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/2/2016',
+                content: '6 hours worked at home'
+            },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/1/2016',
+                content: '8 hours worked in office'
+            },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/2/2016',
+                content: '6 hours worked at home'
+            },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/1/2016',
+                content: '8 hours worked in office'
+            },
+            {
+                badgeClass: 'success',
+                badgeIconClass: '',
+                title: 'Entry for 5/2/2016',
+                content: '6 hours worked at home'
+            },
+            {
+                badgeClass: 'info',
+                badgeIconClass: '',
+                title: 'Your holiday was approved',
+                content: '6/1/2016 till 6/18/2016'
+            }
+        ];
+
+
+    })
     .controller('CompanyCtrl', function ($scope, $http) {
         $scope.companies = [{
             "api": "TimeTac",
@@ -167,14 +224,14 @@ $scope.search="";
         $scope.fieldsB = [];
         $scope.api =[{name:'TimeTac'}]
     })
-        .controller('LoginCtrl', ['$scope', '$location','$cookies' ,'authService', function ($scope, $location,$cookies, authService) {
+    .controller('LoginCtrl', ['$scope', '$location','$cookies' ,'authService', function ($scope, $location,$cookies, authService) {
         $scope.username = "";
         $scope.password = "";
 
 
         $scope.login = function (username, password) {
 
-           $cookies.put('role',authService.createToken(username, password));
+            $cookies.put('role',authService.createToken(username, password));
         }
     }])
     .controller('DashboardCtrl', function ($scope, $location,$interval) {
@@ -192,7 +249,8 @@ $scope.search="";
         $scope.links = [
             {id: 'dashboard', name: 'Dashboard', url: '/dashboard', badge: 0},
             {id: 'company', name: 'Companies', url: '/companies', badge: 0},
-            {id: 'configuration', name: 'Configuration', url: '/configuration', badge: 0}
+            {id: 'configuration', name: 'Configuration', url: '/configuration', badge: 0},
+            {id: 'notifications', name: 'Notifications', url: '/notification', badge: 0}
         ];
 
 
