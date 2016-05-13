@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ImportResource {
     private static LocalDateTime limit = null;
 
-    private static final Duration increment = Duration.ofDays(30);
+    private static final Duration increment = Duration.ofDays(15);
 
     @POST
     @Path("/{companyId}")

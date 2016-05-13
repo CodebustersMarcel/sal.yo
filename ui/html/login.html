@@ -29,7 +29,7 @@
                     <input type="password" ng-model="password" required md-maxlength="30">
                 </md-input-container>
             </md-form>
-            <md-card-actions layout="row" layout-align="end center" class="layout-align-end-center">
+            <md-card-actions layout="row" layout-align="end center" class="layout-align-end-center" >
                 <button class="md-primary md-button md-raised" type="button" ng-click="login(username,password)"
                         aria-label="Login"><span
                         class="ng-scope">Login</span></button>
@@ -41,7 +41,7 @@
 
 
     </md-card>
-    <button class="md-fab md-accent fab1 md-button md-ink-ripple" type="button"  aria-label="Use Android">
+    <button ng-click="loginex()" class="md-fab md-accent fab1 md-button md-ink-ripple" type="button"  aria-label="Use Android">
         <md-icon aria-label="Social register" class="material-icons" alt="Social register">share</md-icon>
         <div class="md-ripple-container"></div></button>
 </div>

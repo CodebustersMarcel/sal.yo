@@ -278,6 +278,10 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
 
             $cookies.put('role', authService.createToken(username, password));
         }
+
+        $scope.loginex=function(){
+            $location.path("/dashboard");
+        }
     }])
     .controller('DashboardCtrl', function ($scope, $location, $interval) {
 
