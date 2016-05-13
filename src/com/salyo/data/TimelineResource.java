@@ -41,6 +41,15 @@ public class TimelineResource {
             for (TimeEntry timeEntry : sorted) {
 
                 if (!Objects.equals(lastTimestamp, timeEntry.getTimestamp())) {
+                    if (lastTimestamp != null) {
+                        JSONObject summary = new JSONObject();
+                        summary.put("badgeClass", "warning");
+                        summary.put("badgeIconClass", "");
+                        summary.put("title", "Summary");
+                        summary.put("content", buildDurationString(duration));
+                        ja.put(summary);
+                    }
+
                     lastTimestamp = timeEntry.getTimestamp();
 
                     JSONObject ts = new JSONObject();
@@ -49,15 +58,6 @@ public class TimelineResource {
                     ts.put("title", "Import from TimeTac");
                     ts.put("content", timeEntry.getTimestamp());
                     ja.put(ts);
-
-                    if (lastTimestamp != null) {
-                        JSONObject summary = new JSONObject();
-                        summary.put("badgeClass", "warning");
-                        summary.put("badgeIconClass", "");
-                        summary.put("title", "Import from TimeTac");
-                        summary.put("content", buildDurationString(duration));
-                        ja.put(summary);
-                    }
                 }
 
                 duration.plus(calculateDuration(timeEntry));
