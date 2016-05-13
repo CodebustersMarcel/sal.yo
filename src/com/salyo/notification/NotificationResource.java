@@ -3,6 +3,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 @Path("/notifications")
 public class NotificationResource {
     private static List<NotificationMessage> notifications = new LinkedList<>();
-    private static final String messageNotFound = "Notification Message not found.";
 
     @GET
     @Path("/{id}")
@@ -23,7 +23,7 @@ public class NotificationResource {
         if (optNotification.isPresent()) {
             return Response.ok(optNotification.get().getFullMessage()).build();
         } else {
-            return Response.serverError().entity(messageNotFound).build();
+            return Response.ok().build();
         }
     }
 
@@ -32,7 +32,7 @@ public class NotificationResource {
     @Consumes(MediaType.TEXT_PLAIN)
     public Response putMessage(@HeaderParam("short") String shortMessage,
                                @HeaderParam("full") String fullMessage) {
-        NotificationMessage notificationMessage = new NotificationMessage(nextId(), shortMessage, fullMessage);
+        NotificationMessage notificationMessage = new NotificationMessage(NotificationMessage.nextId(notifications), shortMessage, fullMessage);
         if (MailNotificator.SendEmail(notificationMessage)) {
             notifications.add(notificationMessage);
             return Response.ok(notificationMessage.getId()).build();
@@ -41,17 +41,8 @@ public class NotificationResource {
         return Response.serverError().entity("Sending failed!").build();
     }
 
-    private long nextId() {
-        if (notifications.isEmpty()) {
-            return 1;
-        }
-        long lastId = notifications.stream()
-                .max(Comparator.comparing(notificationMessage -> notificationMessage.getId())).get().getId();
-        return ++lastId;
-    }
-
     @GET
-    @Path("/by/{date}")
+    @Path("/date/{date}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMessageByDate(@PathParam("date") String date) {
         LocalDate localDate;
@@ -61,7 +52,11 @@ public class NotificationResource {
             return Response.serverError().entity(e.getLocalizedMessage()).build();
         }
 
-        List<NotificationMessage> foundedNotifications = notifications.stream().filter(n -> n.getDate().toLocalDate().equals(localDate)).collect(Collectors.toList());
+        List<NotificationMessage> foundedNotifications = notifications
+                .stream()
+                .filter(n -> n != null && n.getDateTime().toLocalDate().equals(localDate))
+                .collect(Collectors.toList());
+
         if (!foundedNotifications.isEmpty()) {
             String responseMessage = "";
             for (NotificationMessage notification : foundedNotifications) {
@@ -69,7 +64,32 @@ public class NotificationResource {
             }
             return Response.ok(responseMessage).build();
         } else {
-            return Response.serverError().entity(messageNotFound).build();
+            return Response.ok().build();
+        }
+    }
+
+    @GET
+    @Path("/timestamp/{timestamp}")
+    @Produces(MediaType.APPLICATION_JSON)
+    //timestamp value in miliseconds
+    public Response getMessageByTimestamp(@PathParam("timestamp") long timestamp) {
+
+        List<NotificationMessage> foundedNotifications = notifications
+                .stream()
+                .filter(n -> n != null
+                        && (System.currentTimeMillis() - n.getDateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < timestamp)
+                        && !n.isChecked())
+                .collect(Collectors.toList());
+
+        if (!foundedNotifications.isEmpty()) {
+            String responseMessage = "";
+            for (NotificationMessage notification : foundedNotifications) {
+                responseMessage += notification.getFullMessage() + "\n";
+                notification.setChecked(true);
+            }
+            return Response.ok(responseMessage).build();
+        } else {
+            return Response.ok().build();
         }
     }
 }
