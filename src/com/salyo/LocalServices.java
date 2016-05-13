@@ -1,5 +1,6 @@
 package com.salyo;
 
+import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.salyo.data.Company;
 import com.salyo.data.Department;
@@ -10,6 +11,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -56,6 +59,14 @@ public class LocalServices {
 
     public static Company getCompany(UUID companyId) {
         return get(Company.class, COMPANY_GET_PATH, companyId);
+    }
+
+    public static Collection<Department> getDepartments(UUID companyId) {
+        String path = "departments/" + companyId.toString();
+
+        String jsonResponse = getJsonString(path);
+        return genson.deserialize(jsonResponse, new GenericType<List<Department>>() {
+        });
     }
 
     public static Response addTimeEntry(TimeEntry timeEntry) {
