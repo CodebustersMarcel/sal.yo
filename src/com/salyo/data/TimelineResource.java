@@ -14,7 +14,11 @@ import javax.ws.rs.core.Response;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by david.leyendecker on 13.05.2016.
@@ -27,9 +31,25 @@ public class TimelineResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTimelineByEmployee(@PathParam("employeeId") UUID employeeId) {
 
+        Collection<TimeEntry> sorted = LocalServices.getTimeEntries(employeeId).stream().sorted(Comparator.comparing(TimeEntry::getTimestamp)).collect(Collectors.toList());
+
+        String lastTimestamp = null;
+
         JSONArray ja = new JSONArray();
         try {
-            for (TimeEntry timeEntry : LocalServices.getTimeEntries(employeeId)) {
+            for (TimeEntry timeEntry : sorted) {
+
+                if (!Objects.equals(lastTimestamp, timeEntry.getTimestamp())) {
+                    lastTimestamp = timeEntry.getTimestamp();
+
+                    JSONObject ts = new JSONObject();
+                    ts.put("badgeClass", "info");
+                    ts.put("badgeIconClass", "");
+                    ts.put("title", "Import from TimeTac");
+                    ts.put("content", timeEntry.getTimestamp());
+                    ja.put(ts);
+                }
+
                 JSONObject item = new JSONObject();
                 item.put("badgeClass", "success");
                 item.put("badgeIconClass", "");
@@ -69,4 +89,10 @@ public class TimelineResource {
         return content.toString();
     }
 
+    @GET
+    @Path("/notifications")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response geTimelineForNotifications() {
+        return Response.ok().entity(LocalServices.getNotifications()).build();
+    }
 }
