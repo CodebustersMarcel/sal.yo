@@ -7,16 +7,13 @@ import java.util.UUID;
  */
 public class Employee {
     private UUID id;
+    private UUID companyId;
+    private UUID departmentId;
     private String foreignSystemId;
     private String firstName;
     private String lastName;
 
     public Employee() {
-    }
-
-    public Employee(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public UUID getId() {
@@ -25,6 +22,22 @@ public class Employee {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(UUID companyId) {
+        this.companyId = companyId;
+    }
+
+    public UUID getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(UUID departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getForeignSystemId() {

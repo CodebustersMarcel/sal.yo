@@ -10,7 +10,6 @@ public class User {
     private String username;
     private String passwordHash;
     private UserRole role;
-    private String token;
 
     public User(String username, String passwordHash, UserRole role) {
         this.username = username;

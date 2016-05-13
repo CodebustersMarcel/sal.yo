@@ -42,7 +42,7 @@ public class CompanyResource {
             return Response.serverError().build();
         }
 
-        Company company = companies.stream().filter(c -> Objects.equals(c.getUserId(), userId)).findFirst().orElse(null);
+        Company company = companies.stream().filter(c -> Objects.equals(c.getId(), userId)).findFirst().orElse(null);
 
         return Response.ok(company).build();
     }

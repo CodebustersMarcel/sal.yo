@@ -9,6 +9,7 @@ import java.util.UUID;
  */
 public class Department {
     private UUID id;
+    private UUID companyId;
     private String name;
     private UUID supervisorId;
     private UUID supervisorAssistantId;
@@ -23,6 +24,14 @@ public class Department {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(UUID companyId) {
+        this.companyId = companyId;
     }
 
     public String getName() {

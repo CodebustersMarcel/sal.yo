@@ -16,12 +16,16 @@ public class AuthenticationService {
 
     private AuthenticationService() {
         credentials.put("admin", User.create("admin", "admin", UserRole.Admin));
-        credentials.put("user", User.create("user", "user", UserRole.Admin));
-        credentials.put("supervisor", User.create("supervisor", "supervisor", UserRole.Admin));
+        credentials.put("user", User.create("user", "user", UserRole.User));
+        credentials.put("supervisor", User.create("supervisor", "supervisor", UserRole.Supervisor));
     }
 
     public boolean check(String userName, String password) {
         User user = this.credentials.get(userName);
         return user != null && user.getPasswordHash().equals(password);
+    }
+
+    public User getUserByUsername(String username) {
+        return this.credentials.get(username);
     }
 }
