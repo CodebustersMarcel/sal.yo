@@ -71,7 +71,7 @@ public class LocalServices {
 
     public static Collection<Employee> getEmployees(UUID companyId)
     {
-        String path = "eployess/" + companyId.toString();
+        String path = "employees/" + companyId.toString();
 
         String jsonResponse = getJsonString(path);
         return genson.deserialize(jsonResponse, new GenericType<List<Employee>>() {
