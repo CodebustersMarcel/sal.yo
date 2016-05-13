@@ -36,9 +36,9 @@ public class ImportResource {
         Collection<Employee> employees = wrapper.getEmployees();
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
 
-        Collection<Department> mergedDepartments = mergeDepartments(departments, LocalServices.getDepartments(companyId));
+        Collection<Department> mergedDepartments = merge(departments, LocalServices.getDepartments(companyId));
 
-        for (Department department : departments) {
+        for (Department department : mergedDepartments) {
             department.setCompanyId(companyId);
             Response response = LocalServices.addDepartment(department);
 
@@ -47,7 +47,9 @@ public class ImportResource {
             }
         }
 
-        for (Employee employee : employees) {
+        Collection<Employee> mergedEmployees = merge(employees, LocalServices.getEmployees(companyId));
+
+        for (Employee employee : mergedEmployees) {
             employee.setCompanyId(companyId);
             Response response = LocalServices.addEmployee(employee);
 
@@ -56,7 +58,9 @@ public class ImportResource {
             }
         }
 
-        for (TimeEntry timeEntry : timeEntries) {
+        Collection<TimeEntry> mergedTimeEntries = merge(timeEntries, LocalServices.getTimeEntries(companyId));
+
+        for (TimeEntry timeEntry : mergedTimeEntries) {
             Response response = LocalServices.addTimeEntry(timeEntry);
 
             if (response.getStatus() != 200) {
@@ -67,16 +71,16 @@ public class ImportResource {
         return Response.ok().build();
     }
 
-    private static Collection<Department> mergeDepartments(Collection<Department> foreignSystem, Collection<Department> localSystem) {
-        List<Department> result = new ArrayList<>();
-        for (Department department : foreignSystem) {
+    private static <T extends ForeignSystemIdItem> Collection<T> merge(Collection<T> foreignSystem, Collection<T> localSystem) {
+        List<T> result = new ArrayList<>();
+        for (T item : foreignSystem) {
             result.add(localSystem.stream()
-                    .filter(i -> i.getForeignSystemId().equals(department.getForeignSystemId()))
+                    .filter(i -> i.getForeignSystemId().equals(item.getForeignSystemId()))
                     .findFirst()
                     .map(x -> {
-                        department.setId(x.getId());
-                        return department;
-                    }).orElse(department));
+                        item.setId(x.getId());
+                        return item;
+                    }).orElse(item));
         }
         return result;
     }

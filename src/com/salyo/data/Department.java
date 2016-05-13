@@ -4,10 +4,10 @@ import java.util.UUID;
 
 /**
  * Defines an department
- *
+ * <p>
  * Created by david.leyendecker on 12.05.2016.
  */
-public class Department {
+public class Department implements ForeignSystemIdItem {
     private UUID id;
     private UUID companyId;
     private String name;

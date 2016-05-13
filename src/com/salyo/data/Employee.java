@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * Created by david.leyendecker on 12.05.2016.
  */
-public class Employee {
+public class Employee implements ForeignSystemIdItem {
     private UUID id;
     private UUID companyId;
     private UUID departmentId;

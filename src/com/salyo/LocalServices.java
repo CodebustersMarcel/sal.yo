@@ -69,6 +69,23 @@ public class LocalServices {
         });
     }
 
+    public static Collection<Employee> getEmployees(UUID companyId)
+    {
+        String path = "eployess/" + companyId.toString();
+
+        String jsonResponse = getJsonString(path);
+        return genson.deserialize(jsonResponse, new GenericType<List<Employee>>() {
+        });
+    }
+
+    public static Collection<TimeEntry> getTimeEntries(UUID companyId) {
+        String path = "timeentries/" + companyId.toString();
+
+        String jsonResponse = getJsonString(path);
+        return genson.deserialize(jsonResponse, new GenericType<List<TimeEntry>>() {
+        });
+    }
+
     public static Response addTimeEntry(TimeEntry timeEntry) {
         return post(timeEntry, ADD_TIMEENTRY_PATH);
     }

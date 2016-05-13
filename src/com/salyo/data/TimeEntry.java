@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Created by david.leyendecker on 12.05.2016.
  */
-public class TimeEntry {
+public class TimeEntry implements ForeignSystemIdItem {
     private UUID id;
     private UUID employeeId;
     private String start;
