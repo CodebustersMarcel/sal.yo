@@ -30,7 +30,7 @@ public class MailNotificator {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
-            message.setSubject("This is the Message Notificator!");
+            message.setSubject("Notification from salyo");
             message.setText(notificationMessage.getShortMessage()
                     +"\n\n http://localhost:9998/notifications/" + notificationMessage.getId());
             Transport.send(message);
