@@ -15,6 +15,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -22,6 +23,8 @@ import java.util.Set;
  */
 public class Main {
     public static void main(String[] args) {
+
+        Locale.setDefault(Locale.ENGLISH);
 
         URI baseUri = UriBuilder.fromUri("http://localhost/")
                 .port(9998)
@@ -48,6 +51,7 @@ public class Main {
         classes.add(CompanyResource.class);
         classes.add(ImportResource.class);
         classes.add(NotificationResource.class);
+        classes.add(TimelineResource.class);
         return classes;
     }
 }

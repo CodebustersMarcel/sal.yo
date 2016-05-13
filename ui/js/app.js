@@ -1,4 +1,4 @@
-angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies','angular-timeline','angular-scroll-animate'])
+angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 'angular-timeline', 'angular-scroll-animate'])
     .config(function ($mdThemingProvider) {
 
         $mdThemingProvider.theme('default')
@@ -91,56 +91,86 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies','a
             }
         };
     })
-    .controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log, $location) {
-        $scope.search="";
+    .controller('AppCtrl',
+        function ($scope, $timeout, $mdSidenav, $log, $location,$http,$mdToast) {
+            $scope.search = "";
 
-        $scope.toggleLeft = buildToggler('leftnav');
+            $scope.toggleLeft = buildToggler('leftnav');
 
-        $scope.isOpenLeft = function () {
-            return $mdSidenav('leftnav').isOpen();
-        };
-
-        function debounce(func, wait, context) {
-            var timer;
-            return function debounced() {
-                var context = $scope,
-                    args = Array.prototype.slice.call(arguments);
-                $timeout.cancel(timer);
-                timer = $timeout(function () {
-                    timer = undefined;
-                    func.apply(context, args);
-                }, wait || 10);
+            $scope.isOpenLeft = function () {
+                return $mdSidenav('leftnav').isOpen();
             };
-        }
 
-        function buildDelayedToggler(navID) {
-            return debounce(function () {
-                $mdSidenav(navID)
-                    .toggle()
-                    .then(function () {
+            $scope.import = importThat();
+
+            function importThat() {
+                return function () {
+                    $http({
+                        method: 'POST', url: 'http://localhost:9998/import/22b6e72f-ed3c-4b99-b201-b1aea6916536' ,
+                        headers: {'Content-Type': 'text/plain'}
+                    })
+                        .success(function (result) {
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .textContent('import from TimeTac done!')
+                                    .position('bottom right')
+                                    .hideDelay(6000)
+                            );
+
+                        }).error(function (status) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('no connection to TimeTac')
+                                .position('bottom right')
+                                .hideDelay(6000)
+                        );
 
                     });
-            }, 200);
-        }
+                }
 
-        function buildToggler(navID) {
-            return function () {
-                $mdSidenav(navID)
-                    .toggle()
-                    .then(function () {
-
-                    });
             }
-        }
 
-        $scope.close = function (url) {
+            function debounce(func, wait, context) {
+                var timer;
+                return function debounced() {
+                    var context = $scope,
+                        args = Array.prototype.slice.call(arguments);
+                    $timeout.cancel(timer);
+                    timer = $timeout(function () {
+                        timer = undefined;
+                        func.apply(context, args);
+                    }, wait || 10);
+                };
+            }
 
-            $location.path(url);
+            function buildDelayedToggler(navID) {
+                return debounce(function () {
+                    $mdSidenav(navID)
+                        .toggle()
+                        .then(function () {
 
-        }
-    })
+                        });
+                }, 200);
+            }
+
+            function buildToggler(navID) {
+                return function () {
+                    $mdSidenav(navID)
+                        .toggle()
+                        .then(function () {
+
+                        });
+                }
+            }
+
+            $scope.close = function (url) {
+
+                $location.path(url);
+
+            }
+        })
     .controller('EmployeeCtrl', function ($scope) {
-        $scope.side='';
+        $scope.side = '';
         $scope.events = [{
             badgeClass: 'info',
             badgeIconClass: '',
@@ -172,7 +202,7 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies','a
                 content: '6 hours worked at home'
             },
             {
-                badgeClass: 'success',
+                badgeClass: 'warning',
                 badgeIconClass: '',
                 title: 'Entry for 5/1/2016',
                 content: '8 hours worked in office'
@@ -216,32 +246,32 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute','ngCookies','a
             });
         }
     })
-    .controller('CookieCtrl',  ['$scope','$cookies', function($scope,$cookies){
-        $scope.role="Admin";
+    .controller('CookieCtrl', ['$scope', '$cookies', function ($scope, $cookies) {
+        $scope.role = "Admin";
     }])
-    .controller('ConfigurationCtrl',  function($scope){
+    .controller('ConfigurationCtrl', function ($scope) {
         $scope.fieldsA = [];
         $scope.fieldsB = [];
-        $scope.api =[{name:'TimeTac'}]
+        $scope.api = [{name: 'TimeTac'}]
     })
-    .controller('LoginCtrl', ['$scope', '$location','$cookies' ,'authService', function ($scope, $location,$cookies, authService) {
+    .controller('LoginCtrl', ['$scope', '$location', '$cookies', 'authService', function ($scope, $location, $cookies, authService) {
         $scope.username = "";
         $scope.password = "";
 
 
         $scope.login = function (username, password) {
 
-            $cookies.put('role',authService.createToken(username, password));
+            $cookies.put('role', authService.createToken(username, password));
         }
     }])
-    .controller('DashboardCtrl', function ($scope, $location,$interval) {
-        $scope.api =2;
-        $scope.customers=1;
-        $scope.notifications=2;
+    .controller('DashboardCtrl', function ($scope, $location, $interval) {
+        $scope.api = 2;
+        $scope.customers = 1;
+        $scope.notifications = 2;
 
-        $interval(function(){
+        $interval(function () {
             $scope.notifications++;
-        },5000)
+        }, 5000)
 
     })
     .controller('sidenavleftCtrl', function ($scope, $mdSidenav, $location) {
