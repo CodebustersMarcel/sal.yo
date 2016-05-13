@@ -48,6 +48,7 @@ public class Main {
         classes.add(CompanyResource.class);
         classes.add(ImportResource.class);
         classes.add(NotificationResource.class);
+        classes.add(TimelineResource.class);
         return classes;
     }
 }

@@ -25,21 +25,45 @@ public class TimelineResource {
     @GET
     @Path("/employee/{employeeId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTimelineByEmployee(@PathParam("employeeId")UUID employeeId) {
+    public Response getTimelineByEmployee(@PathParam("employeeId") UUID employeeId) {
 
         JSONArray ja = new JSONArray();
-
-        for (TimeEntry timeEntry : LocalServices.getTimeEntries(employeeId)) {
-            try {
+        try {
+            for (TimeEntry timeEntry : LocalServices.getTimeEntries(employeeId)) {
                 JSONObject item = new JSONObject();
+                item.put("badgeClass", "success");
+                item.put("badgeIconClass", "");
                 item.put("title", "Entry for ".concat(timeEntry.getStartDateTime().toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))));
-                item.put("content", Duration.between(timeEntry.getStartDateTime(), timeEntry.getEndDateTime()).toString().concat(" hours worked in office"));
+
+                StringBuilder content = new StringBuilder();
+                Duration duration = Duration.between(timeEntry.getStartDateTime(), timeEntry.getEndDateTime());
+                long hours = duration.toMinutes() / 60;
+                long minutes = duration.toMinutes() % 60;
+                if(hours == 1) {
+                    content.append(String.valueOf(hours)).append(" hour");
+                } else if(duration.toHours() > 1) {
+                    content.append(String.valueOf(hours)).append(" hours");
+                }
+                if(minutes == 1) {
+                    if(content.length() > 0) {
+                        content.append(" and ");
+                    }
+                    content.append(String.valueOf(minutes)).append(" minute");
+                } else if(minutes > 1) {
+                    if(content.length() > 0) {
+                        content.append(" and ");
+                    }
+                    content.append(String.valueOf(minutes)).append(" minutes");
+                }
+
+                item.put("content", content.toString() + " worked at the office");
                 ja.put(item);
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return Response.ok().entity(ja).build();
+
+        return Response.ok().entity(ja.toString()).build();
     }
 
 }
