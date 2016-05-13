@@ -1,4 +1,5 @@
 package com.salyo.notification;
+import javax.mail.MessagingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,12 +34,13 @@ public class NotificationResource {
     public Response putMessage(@HeaderParam("short") String shortMessage,
                                @HeaderParam("full") String fullMessage) {
         NotificationMessage notificationMessage = new NotificationMessage(NotificationMessage.nextId(notifications), shortMessage, fullMessage);
-        if (MailNotificator.SendEmail(notificationMessage)) {
-            notifications.add(notificationMessage);
-            return Response.ok(notificationMessage.getId()).build();
+        try {
+            MailNotificator.SendEmail(notificationMessage);
+        } catch (MessagingException e) {
+            Response.serverError().entity(e.getMessage()).build();
         }
-
-        return Response.serverError().entity("Sending failed!").build();
+        notifications.add(notificationMessage);
+        return Response.ok(notificationMessage.getId()).build();
     }
 
     @GET

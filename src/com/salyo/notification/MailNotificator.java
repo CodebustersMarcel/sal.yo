@@ -14,7 +14,7 @@ public class MailNotificator {
     final static String sendFrom = "sal.yo notifier <notificator111@gmail.com>";
     final static String password = "WoltersKluwer";
 
-    public static boolean SendEmail(NotificationMessage notificationMessage) {
+    public static void SendEmail(NotificationMessage notificationMessage) throws MessagingException{
 
         Properties props = new Properties();
         props.put("mail.smtp.starttls.enable", "true");
@@ -28,7 +28,6 @@ public class MailNotificator {
                         return new PasswordAuthentication(username, password);
                     }
                 });
-        try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(sendFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
@@ -37,9 +36,5 @@ public class MailNotificator {
                     + "\n" + notificationMessage.getFullMessage()
                     + "\n http://localhost:9998/notifications/" + notificationMessage.getId());
             Transport.send(message);
-            return true;
-        } catch (MessagingException mex) {
-            return false;
-        }
     }
 }
