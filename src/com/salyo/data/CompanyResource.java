@@ -37,14 +37,14 @@ public class CompanyResource {
     }
 
     @GET
-    @Path("/get/{userId}")
+    @Path("/get/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompany(@PathParam("userId") UUID userId) {
-        if (userId == null) {
+    public Response getCompany(@PathParam("companyId") UUID companyId) {
+        if (companyId == null) {
             return Response.serverError().build();
         }
 
-        Company company = companies.stream().filter(c -> Objects.equals(c.getUserId(), userId)).findFirst().orElse(null);
+        Company company = companies.stream().filter(c -> Objects.equals(c.getId(), companyId)).findFirst().orElse(null);
 
         return Response.ok(company).build();
     }

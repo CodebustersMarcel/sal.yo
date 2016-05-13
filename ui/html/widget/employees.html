@@ -1,0 +1,21 @@
+<md-content ng-controller="EmployeesCtrl">
+
+    <md-list>
+        <md-list-item class="md-2-line" ng-repeat="c in employees">
+            <div class="md-list-item-text" ng-click="openEmployee(c.id,c.firstName,c.lastName)">
+
+                <div layout="column">
+
+                    <div layout="row" flex="50">
+                        <img src="img/avatar.svg" class="md-avatar" height="48px"/>
+                        <h2>{{c.firstName}} {{c.lastName}}</h2>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <md-divider></md-divider>
+        </md-list-item>
+    </md-list>
+</md-content>

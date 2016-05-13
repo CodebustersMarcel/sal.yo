@@ -4,7 +4,7 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
         $mdThemingProvider.theme('default')
             .primaryPalette('green')
 
-            .accentPalette('deep-purple');
+            .accentPalette('amber');
 
 
     })
@@ -23,10 +23,14 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
         }).when("/configuration", {
             templateUrl: "html/configuration.html",
             controller: "ConfigurationCtrl"
-        }).when("/employee", {
-            templateUrl: "html/employee.html",
-            controller: "EmployeeCtrl"
-        }).otherwise({
+        }).when("/employee/:userId/:name/:lastname", {
+                templateUrl: "html/employee.html",
+                controller: "EmployeeCtrl"
+            })
+            .when("/employees", {
+                templateUrl: "html/employees.html",
+                controller: "EmployeesCtrl"
+            }).otherwise({
             templateUrl: "html/login.html",
             controller: "LoginCtrl"
         });
@@ -75,6 +79,11 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
             templateUrl: 'html/widget/companies.html'
         };
     })
+    .directive('employeeList', function () {
+        return {
+            templateUrl: 'html/widget/employees.html'
+        };
+    })
     .directive('header', function () {
         return {
             templateUrl: 'html/widget/header.html'
@@ -92,9 +101,12 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
         };
     })
     .controller('AppCtrl',
-        function ($scope, $timeout, $mdSidenav, $log, $location,$http,$mdToast) {
+        function ($scope, $timeout, $mdSidenav, $log, $location, $http, $mdToast) {
             $scope.search = "";
-
+            $scope.api = 2;
+            $scope.customers = 1;
+            $scope.notifications = 2;
+            $scope.spinner = 1;
             $scope.toggleLeft = buildToggler('leftnav');
 
             $scope.isOpenLeft = function () {
@@ -104,12 +116,17 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
             $scope.import = importThat();
 
             function importThat() {
+
+                $scope.spinner=0;
+
                 return function () {
                     $http({
-                        method: 'POST', url: 'http://localhost:9998/import/22b6e72f-ed3c-4b99-b201-b1aea6916536' ,
+                        method: 'POST', url: 'http://localhost:9998/import/22b6e72f-ed3c-4b99-b201-b1aea6916536',
                         headers: {'Content-Type': 'text/plain'}
                     })
                         .success(function (result) {
+                            $scope.spinner=1;
+
                             $mdToast.show(
                                 $mdToast.simple()
                                     .textContent('import from TimeTac done!')
@@ -117,7 +134,13 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
                                     .hideDelay(6000)
                             );
 
+                            $scope.close("/employees");
+                            $notifications++;
                         }).error(function (status) {
+                        $notifications++;
+                        $scope.spinner=1;
+
+
                         $mdToast.show(
                             $mdToast.simple()
                                 .textContent('no connection to TimeTac')
@@ -169,59 +192,51 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
 
             }
         })
-    .controller('EmployeeCtrl', function ($scope) {
+    .controller('EmployeeCtrl', function ($scope, $http, $routeParams) {
         $scope.side = '';
-        $scope.events = [{
-            badgeClass: 'info',
-            badgeIconClass: '',
-            title: 'Import data from TimeTac',
-            content: '5/1/2016 till 5/3/2016'
-        },
-            {
-                badgeClass: 'success',
-                badgeIconClass: '',
-                title: 'Entry for 5/1/2016',
-                content: '8 hours worked in office'
-            },
-            {
-                badgeClass: 'success',
-                badgeIconClass: '',
-                title: 'Entry for 5/2/2016',
-                content: '6 hours worked at home'
-            },
-            {
-                badgeClass: 'success',
-                badgeIconClass: '',
-                title: 'Entry for 5/1/2016',
-                content: '8 hours worked in office'
-            },
-            {
-                badgeClass: 'success',
-                badgeIconClass: '',
-                title: 'Entry for 5/2/2016',
-                content: '6 hours worked at home'
-            },
-            {
-                badgeClass: 'warning',
-                badgeIconClass: '',
-                title: 'Entry for 5/1/2016',
-                content: '8 hours worked in office'
-            },
-            {
-                badgeClass: 'success',
-                badgeIconClass: '',
-                title: 'Entry for 5/2/2016',
-                content: '6 hours worked at home'
-            },
-            {
-                badgeClass: 'info',
-                badgeIconClass: '',
-                title: 'Your holiday was approved',
-                content: '6/1/2016 till 6/18/2016'
-            }
-        ];
+        $scope.name = $routeParams.name;
+        $scope.lastname = $routeParams.lastname;
+
+        $scope.events = [];
 
 
+        var init = function () {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:9998/timeline/employee/' + $routeParams.userId
+            }).then(function successCallback(response) {
+                if (response.data.length > 0)
+                    $scope.events = response.data;
+                else $scope.events = [{
+                    badgeClass: 'error',
+                    badgeIconClass: '',
+                    title: 'No data present',
+                    content: 'use the import button to show data'
+                }];
+            });
+        }
+        init();
+    })
+    .controller('EmployeesCtrl', function ($scope, $http, $location) {
+
+        $scope.employees = [];
+
+        $scope.openEmployee = function (userId,name,lastname) {
+            $location.path("/employee/" + userId+"/"+name+"/"+lastname);
+        }
+
+        function init() {
+
+            $http({
+                method: 'GET',
+                url: 'http://localhost:9998/employees/22b6e72f-ed3c-4b99-b201-b1aea6916536'
+            }).then(function successCallback(response) {
+                $scope.employees = response.data;
+            });
+
+        }
+
+        init();
     })
     .controller('CompanyCtrl', function ($scope, $http) {
         $scope.companies = [{
@@ -265,13 +280,7 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
         }
     }])
     .controller('DashboardCtrl', function ($scope, $location, $interval) {
-        $scope.api = 2;
-        $scope.customers = 1;
-        $scope.notifications = 2;
 
-        $interval(function () {
-            $scope.notifications++;
-        }, 5000)
 
     })
     .controller('sidenavleftCtrl', function ($scope, $mdSidenav, $location) {
@@ -279,6 +288,7 @@ angular.module('salyoApp', ['ngMaterial', 'ngMessages', 'ngRoute', 'ngCookies', 
         $scope.links = [
             {id: 'dashboard', name: 'Dashboard', url: '/dashboard', badge: 0},
             {id: 'company', name: 'Companies', url: '/companies', badge: 0},
+            {id: 'employees', name: 'Employees', url: '/employees', badge: 0},
             {id: 'configuration', name: 'Configuration', url: '/configuration', badge: 0},
             {id: 'notifications', name: 'Notifications', url: '/notification', badge: 0}
         ];

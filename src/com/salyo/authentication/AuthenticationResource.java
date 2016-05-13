@@ -20,6 +20,6 @@ public class AuthenticationResource {
         }
 
         String token = TokenService.getInstance().createToken(userName);
-        return Response.status(Response.Status.FORBIDDEN).build();
+        return Response.status(Response.Status.OK).build();
     }
 }
