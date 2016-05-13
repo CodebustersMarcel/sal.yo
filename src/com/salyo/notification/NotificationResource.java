@@ -44,7 +44,7 @@ public class NotificationResource {
     @GET
     @Path("/date/{date}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMessageByDate(@PathParam("date") String date) {
+    public Response getMessagesByDate(@PathParam("date") String date) {
         LocalDate localDate;
         try {
             localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
@@ -72,7 +72,7 @@ public class NotificationResource {
     @Path("/timestamp/{timestamp}")
     @Produces(MediaType.APPLICATION_JSON)
     //timestamp value in miliseconds
-    public Response getMessageByTimestamp(@PathParam("timestamp") long timestamp) {
+    public Response getMessagesByTimestamp(@PathParam("timestamp") long timestamp) {
 
         List<NotificationMessage> foundedNotifications = notifications
                 .stream()
