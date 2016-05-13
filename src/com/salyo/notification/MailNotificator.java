@@ -9,7 +9,7 @@ import java.util.Properties;
  * Created by eugen.rieb on 12.05.2016.
  */
 public class MailNotificator {
-    final private static String sendTo = "eugen.rieb@wolterskluwer.com";
+    final private static String sendTo = "marcel.weissgerber@wolterskluwer.com";
     final static String username = "notificator111@gmail.com";
     final static String password = "WoltersKluwer";
 
