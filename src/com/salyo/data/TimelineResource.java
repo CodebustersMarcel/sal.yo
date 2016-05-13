@@ -42,13 +42,10 @@ public class TimelineResource {
 
                 if (!Objects.equals(lastTimestamp, timeEntry.getTimestamp())) {
                     if (lastTimestamp != null) {
-                        JSONObject summary = new JSONObject();
-                        summary.put("badgeClass", "warning");
-                        summary.put("badgeIconClass", "");
-                        summary.put("title", "Summary");
-                        summary.put("content", buildDurationString(duration));
-                        ja.put(summary);
+                        ja.put(createSummaryJsonObject(duration));
                     }
+
+                    duration = Duration.ZERO;
 
                     lastTimestamp = timeEntry.getTimestamp();
 
@@ -60,7 +57,7 @@ public class TimelineResource {
                     ja.put(ts);
                 }
 
-                duration.plus(calculateDuration(timeEntry));
+                duration = duration.plus(calculateDuration(timeEntry));
 
                 JSONObject item = new JSONObject();
                 item.put("badgeClass", "success");
@@ -68,14 +65,26 @@ public class TimelineResource {
                 item.put("title", "Entry for ".concat(timeEntry.getStartDateTime().toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
                 item.put("content", buildContentString(timeEntry));
                 ja.put(item);
-
-                duration = Duration.ZERO;
             }
+
+            if (lastTimestamp != null) {
+                ja.put(createSummaryJsonObject(duration));
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return Response.ok().entity(ja.toString()).build();
+    }
+
+    private JSONObject createSummaryJsonObject(Duration duration) throws JSONException {
+        JSONObject summary = new JSONObject();
+        summary.put("badgeClass", "warning");
+        summary.put("badgeIconClass", "");
+        summary.put("title", "Summary");
+        summary.put("content", buildDurationString(duration));
+        return summary;
     }
 
     private String buildContentString(TimeEntry timeEntry) {

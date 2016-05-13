@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 @Path("/import")
 public class ImportResource {
     private static LocalDateTime limit = null;
+
+    private static final Duration increment = Duration.ofDays(30);
 
     @POST
     @Path("/{companyId}")
@@ -114,7 +117,7 @@ public class ImportResource {
         Optional<TimeEntry> min = timeEntries.stream().min(Comparator.comparing(TimeEntry::getStartDateTime));
 
         if (min.isPresent()) {
-            return min.get().getStartDateTime().minusDays(1);
+            return min.get().getStartDateTime().minus(increment);
         } else {
             return null;
         }
@@ -124,7 +127,7 @@ public class ImportResource {
         if (limit == null) {
             return Collections.emptyList();
         } else {
-            LocalDateTime first = limit.minusWeeks(1);
+            LocalDateTime first = limit.minus(increment);
             return entries.stream()
                     .filter(e -> e.getStartDateTime() == null || (e.getStartDateTime().isAfter(first) && e.getStartDateTime().isBefore(limit)))
                     .collect(Collectors.toList());
@@ -133,7 +136,7 @@ public class ImportResource {
 
     private static void incrementLimit() {
         if (limit != null) {
-            limit = limit.plusWeeks(1);
+            limit = limit.plus(increment);
         }
     }
 }
