@@ -25,6 +25,8 @@ public class ImportResource {
     @Path("/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response importCompany(@PathParam("companyId") UUID companyId) {
+        LocalDateTime timestamp = LocalDateTime.now();
+
         Company company = LocalServices.getCompany(companyId);
 
         if (company == null) {
@@ -68,6 +70,10 @@ public class ImportResource {
         }
 
         for (TimeEntry timeEntry : timeEntries) {
+            if (timeEntry.getTimestamp() == null) {
+                timeEntry.setTimestamp(timestamp.toString());
+            }
+
             mergedEmployees.stream()
                     .filter(e -> Objects.equals(e.getForeignSystemId(), timeEntry.getForeignSystemEmployeeId()))
                     .findFirst()
