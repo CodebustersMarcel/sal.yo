@@ -11,7 +11,7 @@ import java.util.Properties;
 public class MailNotificator {
     final private static String sendTo = "marcel.weissgerber@wolterskluwer.com";
     final static String username = "notificator111@gmail.com";
-    final static String sendFrom = "sal.yo notifier";
+    final static String sendFrom = "sal.yo notifier <notificator111@gmail.com>";
     final static String password = "WoltersKluwer";
 
     public static boolean SendEmail(NotificationMessage notificationMessage) {
