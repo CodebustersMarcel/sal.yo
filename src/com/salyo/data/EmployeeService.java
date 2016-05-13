@@ -1,5 +1,7 @@
 package com.salyo.data;
 
+import com.salyo.dummydata.Constants;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,6 +17,16 @@ public class EmployeeService {
 
     public static EmployeeService getInstance() {
         return instance;
+    }
+
+    private EmployeeService() {
+        // Create dummy data from test system
+        Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("1")
+                .firstName("Olga").lastName("Puck").buildAndConsume(employees::add);
+        Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("10")
+                .firstName("Stefanie").lastName("Berger").buildAndConsume(employees::add);
+        Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("11")
+                .firstName("Sophie").lastName("Steiner").buildAndConsume(employees::add);
     }
 
     public List<Employee> getAllByCompany(UUID companyId) {

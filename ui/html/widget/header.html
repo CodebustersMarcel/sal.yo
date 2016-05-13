@@ -1,0 +1,33 @@
+<sidenavleft></sidenavleft>
+<md-toolbar md-whiteframe="2">
+    <div class="md-toolbar-tools">
+        <button class="md-icon-button md-button md-ink-ripple" type="button" aria-label="Settings"
+                ng-click="toggleLeft()">
+            <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
+            <div class="md-ripple-container"></div>
+        </button>
+        <img src="img/logo.svg" width="150"/>
+        <div hide="" show-gt-sm="" flex="" class="hide show-gt-sm flex">
+
+            <span>Online salary manager</span>
+            <span flex="" class="flex"></span>
+
+            <button class="md-accent md-button md-raised" type="button"
+                    aria-label="Create import"><span
+                    class="ng-scope">Make import</span></button>
+
+        </div>
+        <md-input-container>
+            <label>Search</label>
+            <input type="text" ng-model="search" required md-maxlength="100">
+        </md-input-container>
+        <span flex="" class="flex"></span>
+
+        <button class="md-icon-button md-button md-ink-ripple" type="button" aria-label="More"
+                ng-click="close('/login')">
+            <md-icon aria-label="Menu" class="material-icons">more_vert</md-icon>
+            <div class="md-ripple-container"></div>
+        </button>
+
+    </div>
+</md-toolbar>

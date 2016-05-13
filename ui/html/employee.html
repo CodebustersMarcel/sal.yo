@@ -1,0 +1,34 @@
+<header></header>
+
+<md-chips>
+
+    <md-chip>Admin</md-chip>
+    <md-chip>Employee</md-chip>
+    <md-chip>Overview</md-chip>
+    <md-chip>Sophie Steiner</md-chip>
+
+</md-chips>
+
+<div layout="column">
+    <div layout="row" flex="50">
+        <md-card>
+
+        </md-card>
+    </div>
+</div>
+
+<timeline side="left">
+    <timeline-event ng-repeat="event in events" side="">
+        <timeline-badge class="{{event.badgeClass}}">
+            <i class="glyphicon {{event.badgeIconClass}}"></i>
+        </timeline-badge>
+        <timeline-panel class="{{event.badgeClass}}">
+            <timeline-heading>
+                <h4>{{event.title}}</h4>
+            </timeline-heading>
+            <p>{{event.content}}</p>
+        </timeline-panel>
+    </timeline-event>
+</timeline>
+
+

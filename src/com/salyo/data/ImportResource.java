@@ -4,17 +4,23 @@ import com.salyo.LocalServices;
 import com.salyo.apis.TimeTrackingApiWrapper;
 import com.salyo.apis.TimeTrackingApiWrapperFactory;
 
-import javax.ws.rs.*;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by daniel.blum on 12.05.2016.
  */
 @Path("/import")
 public class ImportResource {
+    private static LocalDateTime limit = null;
+
     @POST
     @Path("/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,11 +33,22 @@ public class ImportResource {
 
         TimeTrackingApiWrapper wrapper = TimeTrackingApiWrapperFactory.create(company.getApi(), company.getUsername(), company.getPassword());
 
-        Collection<Employee> employees = wrapper.getEmployees();
         Collection<Department> departments = wrapper.getDepartments();
+        Collection<Employee> employees = wrapper.getEmployees();
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
 
-        for (Department department : departments) {
+        if (limit == null) {
+            limit = getMinimumDate(timeEntries);
+        }
+
+        incrementLimit();
+
+        timeEntries = filterTimeEntries(timeEntries, limit);
+
+        Collection<Department> mergedDepartments = merge(departments, LocalServices.getDepartments(companyId));
+
+        for (Department department : mergedDepartments) {
+            department.setCompanyId(companyId);
             Response response = LocalServices.addDepartment(department);
 
             if (response.getStatus() != 200) {
@@ -39,7 +56,10 @@ public class ImportResource {
             }
         }
 
-        for (Employee employee : employees) {
+        Collection<Employee> mergedEmployees = merge(employees, LocalServices.getEmployees(companyId));
+
+        for (Employee employee : mergedEmployees) {
+            employee.setCompanyId(companyId);
             Response response = LocalServices.addEmployee(employee);
 
             if (response.getStatus() != 200) {
@@ -48,6 +68,11 @@ public class ImportResource {
         }
 
         for (TimeEntry timeEntry : timeEntries) {
+            mergedEmployees.stream()
+                    .filter(e -> Objects.equals(e.getForeignSystemId(), timeEntry.getForeignSystemEmployeeId()))
+                    .findFirst()
+                    .ifPresent(e -> timeEntry.setEmployeeId(e.getId()));
+
             Response response = LocalServices.addTimeEntry(timeEntry);
 
             if (response.getStatus() != 200) {
@@ -56,5 +81,50 @@ public class ImportResource {
         }
 
         return Response.ok().build();
+    }
+
+    private static <T extends ForeignSystemIdItem> Collection<T> merge(Collection<T> foreignSystem, Collection<T> localSystem) {
+        List<T> result = new ArrayList<>();
+        for (T item : foreignSystem) {
+            result.add(localSystem.stream()
+                    .filter(i -> i.getForeignSystemId().equals(item.getForeignSystemId()))
+                    .findFirst()
+                    .map(x -> {
+                        item.setId(x.getId());
+                        return item;
+                    }).orElse(item));
+        }
+        return result;
+    }
+
+    private static LocalDateTime getMinimumDate(Collection<TimeEntry> timeEntries) {
+        if (timeEntries == null) {
+            return null;
+        }
+
+        Optional<TimeEntry> min = timeEntries.stream().min(Comparator.comparing(TimeEntry::getStartDateTime));
+
+        if (min.isPresent()) {
+            return min.get().getStartDateTime().minusDays(1);
+        } else {
+            return null;
+        }
+    }
+
+    private static Collection<TimeEntry> filterTimeEntries(Collection<TimeEntry> entries, LocalDateTime limit) {
+        if (limit == null) {
+            return Collections.emptyList();
+        } else {
+            LocalDateTime first = limit.minusWeeks(1);
+            return entries.stream()
+                    .filter(e -> e.getStartDateTime() == null || (e.getStartDateTime().isAfter(first) && e.getStartDateTime().isBefore(limit)))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private static void incrementLimit() {
+        if (limit != null) {
+            limit = limit.plusWeeks(1);
+        }
     }
 }

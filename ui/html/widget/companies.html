@@ -1,0 +1,13 @@
+<md-content  ng-controller="CompanyCtrl">
+    <md-list>
+        <md-list-item class="md-2-line" ng-repeat="c in companies">
+            <div class="md-list-item-text">
+
+
+                <h3>{{c.name}}</h3>
+                <p>{{c.api}}</p>
+            </div>
+<md-divider></md-divider>
+        </md-list-item>
+    </md-list>
+</md-content>

@@ -2,6 +2,7 @@ package com.salyo.data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class TimeEntriesService {
 
     public UUID persist(TimeEntry timeEntry) {
 
-        if(timeEntry.getId() == null) {
+        if (timeEntry.getId() == null) {
             timeEntry.setId(UUID.randomUUID());
         } else {
             entries.removeIf(x -> x.getId().equals(timeEntry.getId()));
@@ -33,7 +34,7 @@ public class TimeEntriesService {
     public List<TimeEntry> getAllByEmployee(UUID employeeId) {
         return entries
                 .stream()
-                .filter(timeEntry -> timeEntry.getEmployeeId().equals(employeeId))
+                .filter(timeEntry -> Objects.equals(timeEntry.getEmployeeId(), employeeId))
                 .collect(Collectors.toList());
     }
 
