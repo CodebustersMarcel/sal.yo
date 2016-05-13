@@ -22,11 +22,11 @@ public class EmployeeService {
     private EmployeeService() {
         // Create dummy data from test system
         Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("1")
-                .firstName("Olga").lastName("Puck").buildAndConsume(employees::add);
+                .firstName("Olga").lastName("Puck").id(Constants.OLGA_PUCK_ID).buildAndConsume(employees::add);
         Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("10")
-                .firstName("Stefanie").lastName("Berger").buildAndConsume(employees::add);
+                .firstName("Stefanie").lastName("Berger").id(Constants.STEFANIE_BERGER_ID).buildAndConsume(employees::add);
         Employee.builder().companyId(Constants.DEFAULT_COMPANY_ID).foreignSystemId("11")
-                .firstName("Sophie").lastName("Steiner").buildAndConsume(employees::add);
+                .firstName("Sophie").lastName("Steiner").id(Constants.SOPHIE_STEINER_ID).buildAndConsume(employees::add);
     }
 
     public List<Employee> getAllByCompany(UUID companyId) {
@@ -37,7 +37,7 @@ public class EmployeeService {
 
     public UUID persist(Employee employee) {
 
-        if(employee.getId() == null) {
+        if (employee.getId() == null) {
             employee.setId(UUID.randomUUID());
         } else {
             employees.removeIf(x -> x.getId().equals(employee.getId()));
