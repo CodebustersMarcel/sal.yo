@@ -34,6 +34,7 @@ public class TimelineResource {
         Collection<TimeEntry> sorted = LocalServices.getTimeEntries(employeeId).stream().sorted(Comparator.comparing(TimeEntry::getTimestamp)).collect(Collectors.toList());
 
         String lastTimestamp = null;
+        Duration duration = Duration.ZERO;
 
         JSONArray ja = new JSONArray();
         try {
@@ -48,7 +49,18 @@ public class TimelineResource {
                     ts.put("title", "Import from TimeTac");
                     ts.put("content", timeEntry.getTimestamp());
                     ja.put(ts);
+
+                    if (lastTimestamp != null) {
+                        JSONObject summary = new JSONObject();
+                        summary.put("badgeClass", "warning");
+                        summary.put("badgeIconClass", "");
+                        summary.put("title", "Import from TimeTac");
+                        summary.put("content", buildDurationString(duration));
+                        ja.put(summary);
+                    }
                 }
+
+                duration.plus(calculateDuration(timeEntry));
 
                 JSONObject item = new JSONObject();
                 item.put("badgeClass", "success");
@@ -56,6 +68,8 @@ public class TimelineResource {
                 item.put("title", "Entry for ".concat(timeEntry.getStartDateTime().toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))));
                 item.put("content", buildContentString(timeEntry));
                 ja.put(item);
+
+                duration = Duration.ZERO;
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -65,28 +79,36 @@ public class TimelineResource {
     }
 
     private String buildContentString(TimeEntry timeEntry) {
-        StringBuilder content = new StringBuilder();
         Duration duration = Duration.between(timeEntry.getStartDateTime(), timeEntry.getEndDateTime());
+        return buildDurationString(duration);
+    }
+
+    private String buildDurationString(Duration duration) {
+        StringBuilder content = new StringBuilder();
         long hours = duration.toMinutes() / 60;
         long minutes = duration.toMinutes() % 60;
         content.append("Worked at the office for ");
-        if(hours == 1) {
+        if (hours == 1) {
             content.append(String.valueOf(hours)).append(" hour");
-        } else if(duration.toHours() > 1) {
+        } else if (duration.toHours() > 1) {
             content.append(String.valueOf(hours)).append(" hours");
         }
-        if(minutes == 1) {
-            if(hours > 0) {
+        if (minutes == 1) {
+            if (hours > 0) {
                 content.append(" and ");
             }
             content.append(String.valueOf(minutes)).append(" minute");
-        } else if(minutes > 1) {
-            if(hours > 0) {
+        } else if (minutes > 1) {
+            if (hours > 0) {
                 content.append(" and ");
             }
             content.append(String.valueOf(minutes)).append(" minutes");
         }
         return content.toString();
+    }
+
+    private Duration calculateDuration(TimeEntry timeEntry) {
+        return Duration.between(timeEntry.getStartDateTime(), timeEntry.getEndDateTime());
     }
 
     @GET
