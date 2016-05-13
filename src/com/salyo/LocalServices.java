@@ -6,10 +6,12 @@ import com.salyo.data.Company;
 import com.salyo.data.Department;
 import com.salyo.data.Employee;
 import com.salyo.data.TimeEntry;
+import com.salyo.notification.NotificationMessage;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +28,7 @@ public class LocalServices {
     private static final String ADD_TIMEENTRY_PATH = "timeentries/add/";
     private static final String ADD_DEPARTMENT_PATH = "departments/add/";
     private static final String ADD_EMPLOYEE_PATH = "employees/add/";
+    private static final String ADD_NOTIFICATION_PATH ="notifications/add/";
 
     private static String getJsonString(String path) {
         Client client = ClientBuilder.newClient();
@@ -86,6 +89,13 @@ public class LocalServices {
         });
     }
 
+    public static Collection<NotificationMessage> getNotifications() {
+        String path = "/notifications/timestamp/10000";
+        String jsonResponse = getJsonString(path);
+        return genson.deserialize(jsonResponse, new GenericType<List<NotificationMessage>>() {
+        });
+    }
+
     public static Response addTimeEntry(TimeEntry timeEntry) {
         return post(timeEntry, ADD_TIMEENTRY_PATH);
     }
@@ -96,5 +106,13 @@ public class LocalServices {
 
     public static Response addEmployee(Employee employee) {
         return post(employee, ADD_EMPLOYEE_PATH);
+    }
+
+    public static Response addNotification(String shortMessage, String fullMessage) {
+        return ClientBuilder.newClient().target(URI + ADD_NOTIFICATION_PATH)
+                .request(MediaType.APPLICATION_JSON)
+                .header("short", shortMessage)
+                .header("full", fullMessage)
+                .post(null);
     }
 }

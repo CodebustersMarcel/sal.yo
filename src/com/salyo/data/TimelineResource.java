@@ -89,4 +89,10 @@ public class TimelineResource {
         return content.toString();
     }
 
+    @GET
+    @Path("/notifications")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response geTimelineForNotifications() {
+        return Response.ok().entity(LocalServices.getNotifications()).build();
+    }
 }

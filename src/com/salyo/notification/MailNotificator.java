@@ -25,17 +25,19 @@ public class MailNotificator {
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
-                    }});
-        try{
+                    }
+                });
+        try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
             message.setSubject("Notification from salyo");
             message.setText(notificationMessage.getShortMessage()
-                    +"\n\n http://localhost:9998/notifications/" + notificationMessage.getId());
+                    + "\n" + notificationMessage.getFullMessage()
+                    + "\n http://localhost:9998/notifications/" + notificationMessage.getId());
             Transport.send(message);
             return true;
-        }catch (MessagingException mex) {
+        } catch (MessagingException mex) {
             return false;
         }
     }
