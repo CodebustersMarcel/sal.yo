@@ -11,6 +11,7 @@ import java.util.Properties;
 public class MailNotificator {
     final private static String sendTo = "marcel.weissgerber@wolterskluwer.com";
     final static String username = "notificator111@gmail.com";
+    final static String sendFrom = "sal.yo notifier";
     final static String password = "WoltersKluwer";
 
     public static boolean SendEmail(NotificationMessage notificationMessage) {
@@ -29,9 +30,9 @@ public class MailNotificator {
                 });
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+            message.setFrom(new InternetAddress(sendFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
-            message.setSubject("Notification from salyo");
+            message.setSubject("Notification from sal.yo");
             message.setText(notificationMessage.getShortMessage()
                     + "\n" + notificationMessage.getFullMessage()
                     + "\n http://localhost:9998/notifications/" + notificationMessage.getId());
