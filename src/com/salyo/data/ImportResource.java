@@ -80,6 +80,9 @@ public class ImportResource {
             }
         }
 
+        LocalServices.addNotification("Import successfull", "The import for " + company.getName() +
+                " finished successfully. The import conatained " + timeEntries.size() + "time entries.");
+
         return Response.ok().build();
     }
 
