@@ -10,16 +10,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by daniel.blum on 12.05.2016.
  */
 @Path("/import")
 public class ImportResource {
+    private static LocalDateTime limit = null;
+
     @POST
     @Path("/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -35,6 +36,14 @@ public class ImportResource {
         Collection<Department> departments = wrapper.getDepartments();
         Collection<Employee> employees = wrapper.getEmployees();
         Collection<TimeEntry> timeEntries = wrapper.getTimeEntries();
+
+        if (limit == null) {
+            limit = getMinimumDate(timeEntries);
+        }
+
+        incrementLimit();
+
+        timeEntries = filterTimeEntries(timeEntries, limit);
 
         Collection<Department> mergedDepartments = merge(departments, LocalServices.getDepartments(companyId));
 
@@ -58,9 +67,12 @@ public class ImportResource {
             }
         }
 
-        Collection<TimeEntry> mergedTimeEntries = merge(timeEntries, LocalServices.getTimeEntries(companyId));
+        for (TimeEntry timeEntry : timeEntries) {
+            mergedEmployees.stream()
+                    .filter(e -> Objects.equals(e.getForeignSystemId(), timeEntry.getForeignSystemEmployeeId()))
+                    .findFirst()
+                    .ifPresent(e -> timeEntry.setEmployeeId(e.getId()));
 
-        for (TimeEntry timeEntry : mergedTimeEntries) {
             Response response = LocalServices.addTimeEntry(timeEntry);
 
             if (response.getStatus() != 200) {
@@ -83,5 +95,36 @@ public class ImportResource {
                     }).orElse(item));
         }
         return result;
+    }
+
+    private static LocalDateTime getMinimumDate(Collection<TimeEntry> timeEntries) {
+        if (timeEntries == null) {
+            return null;
+        }
+
+        Optional<TimeEntry> min = timeEntries.stream().min(Comparator.comparing(TimeEntry::getStartDateTime));
+
+        if (min.isPresent()) {
+            return min.get().getStartDateTime().minusDays(1);
+        } else {
+            return null;
+        }
+    }
+
+    private static Collection<TimeEntry> filterTimeEntries(Collection<TimeEntry> entries, LocalDateTime limit) {
+        if (limit == null) {
+            return Collections.emptyList();
+        } else {
+            LocalDateTime first = limit.minusWeeks(1);
+            return entries.stream()
+                    .filter(e -> e.getStartDateTime() == null || (e.getStartDateTime().isAfter(first) && e.getStartDateTime().isBefore(limit)))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private static void incrementLimit() {
+        if (limit != null) {
+            limit = limit.plusWeeks(1);
+        }
     }
 }

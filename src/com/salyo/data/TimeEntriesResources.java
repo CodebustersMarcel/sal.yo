@@ -15,17 +15,6 @@ import java.util.stream.Stream;
  */
 @Path("/timeentries")
 public class TimeEntriesResources {
-
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll() {
-
-        List<TimeEntry> items = Stream.generate(TimeEntry::new).limit(500).collect(Collectors.toList());
-
-        return Response.ok(items).build();
-    }
-
     @GET
     @Path("/{employeeId}")
     @Produces(MediaType.APPLICATION_JSON)

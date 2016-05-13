@@ -14,6 +14,7 @@ public class TimeEntry implements ForeignSystemIdItem {
     private String end;
     private int type;
     private String foreignSystemId;
+    private String foreignSystemEmployeeId;
 
     public UUID getId() {
         return id;
@@ -69,5 +70,13 @@ public class TimeEntry implements ForeignSystemIdItem {
 
     public void setForeignSystemId(String foreignSystemId) {
         this.foreignSystemId = foreignSystemId;
+    }
+
+    public String getForeignSystemEmployeeId() {
+        return foreignSystemEmployeeId;
+    }
+
+    public void setForeignSystemEmployeeId(String foreignSystemEmployeeId) {
+        this.foreignSystemEmployeeId = foreignSystemEmployeeId;
     }
 }

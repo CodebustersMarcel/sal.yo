@@ -59,6 +59,8 @@ public class TimeTacTimestamp {
         result.setStart(start.format(DateTimeFormatter.ISO_DATE_TIME));
         result.setEnd(end.format(DateTimeFormatter.ISO_DATE_TIME));
 
+        result.setForeignSystemEmployeeId(Integer.toString(getUser_id()));
+
         return result;
     }
 }
