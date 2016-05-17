@@ -35,7 +35,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="javax.mail:mail:1.4.5" level="project" />
+    <orderEntry type="library" name="javax.mail:mail:1.4.1" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

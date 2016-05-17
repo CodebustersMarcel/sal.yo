@@ -1,0 +1,58 @@
+*.class
+target/
+out/
+logs/
+classes/
+
+# git merge files
+*.orig
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+
+# Editor #
+######################
+
+# Intellij project files
+.idea/
+workspace.xml
+tasks.xml
+# ignore module files -> enable import from Maven instead!
+*.iml
+
+
+# Eclipse
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+.classpath
+.settings/
+.loadpath
+*.launch
+
+# SublimeText project files
+*.sublime-workspace
+
+*~
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# virtual machine crash logs
+hs_err_pid*
+sdn.domain.lohn/Personal.xml
